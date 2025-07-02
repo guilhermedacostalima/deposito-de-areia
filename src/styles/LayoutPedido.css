@@ -1,46 +1,137 @@
 .layout-pedido-container {
-  width: 559px;  /* A6 deitada: 148mm ≈ 559px */
-  height: 396px; /* 105mm ≈ 396px */
+  width: 559px;  /* A6 deitada */
+  height: 396px; /* 105mm */
   background-color: #fff;
   border: 3px dashed #2563eb;
   border-radius: 8px;
   box-sizing: border-box;
-  padding: 1.5rem 2rem;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 0.5rem 1rem; /* padding mais compacto */
   color: #111827;
   position: relative;
-  margin: 2rem auto;
+  margin: 1.5rem auto 2.5rem; /* menos espaço embaixo */
 }
 
 .layout-pedido-data {
   position: absolute;
-  top: 0.5rem;
+  top: 0.3rem;
   right: 1rem;
-  font-size: 1.2rem;
-  color: #2563eb;
   font-weight: 700;
-  font-size: 25px;
+  font-size: 18px;
   user-select: none;
 }
 
 .layout-pedido-info-container {
-  margin-top: 1.5rem;
-  font-size: 1.05rem;
-  line-height: 1.6;
+  margin-top: -0.8rem; /* puxado um pouco mais pra cima */
+  font-size: 0.85rem;
+  line-height: 1.2;
+}
+
+.cliente-container {
+  line-height: 1.6em;
+}
+
+/* Bordas em cima e embaixo, sem arredondamento */
+.cliente-container,
+.endereco-container {
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  border-radius: 0;
+  padding: 0.4rem 0.8rem; /* padding mais apertado */
+  margin-bottom: 0.6rem; /* menos espaço entre blocos */
 }
 
 .layout-pedido-info-title {
-  margin-top: 1.2rem;
-  margin-bottom: 0.7rem;
   font-weight: 700;
-  font-size: 1.3rem;
-  color: #2563eb;
+  font-size: 1rem;
   user-select: none;
+  margin-top: 0.5rem;
+  margin-bottom: 0.3rem;
+}
+
+/* Espaçamento maior só no título Endereço */
+.endereco-container > .layout-pedido-info-title {
+  margin-bottom: 0.6rem;
 }
 
 .layout-pedido-info-text {
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.15rem;
   display: flex;
   flex-wrap: wrap;
-  gap: 1.5rem;
+  gap: 0.5rem;
+}
+
+.idcliente-responsavel-group {
+  gap: 5.2rem;
+  align-items: center;
+}
+
+.cliente-responsavel-subgroup {
+  display: flex;
+  gap: 10rem;
+  align-items: center;
+}
+
+.grupo-endereco-detalhes {
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: -0.3rem; /* puxa o endereço mais pra cima */
+}
+
+.numerobairro-group {
+  display: flex;
+  gap: 10rem;
+}
+
+.cidadecontato-group {
+  display: flex;
+  gap: 10.5rem;
+}
+
+/* === Estilos do container Material === */
+.material-container {
+  margin-top: 1rem;
+  padding: 0.5rem 0.8rem;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  border-radius: 0;
+  font-size: 0.85rem;
+  color: #111827;
+}
+
+.material-title {
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  user-select: none;
+}
+
+.material-header {
+  display: flex;
+  font-weight: 700;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 0.3rem;
+  gap: 0.7rem;
+}
+
+.material-col {
+  user-select: none;
+}
+
+.material-name {
+  flex: 3;
+}
+
+.material-qty {
+  flex: 1;
+  text-align: center;
+}
+
+.material-unit-value {
+  flex: 1.5;
+  text-align: right;
+}
+
+.material-total {
+  flex: 1.5;
+  text-align: right;
 }
