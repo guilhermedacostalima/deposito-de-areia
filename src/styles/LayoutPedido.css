@@ -1,0 +1,46 @@
+.layout-pedido-container {
+  width: 559px;  /* A6 deitada: 148mm ≈ 559px */
+  height: 396px; /* 105mm ≈ 396px */
+  background-color: #fff;
+  border: 3px dashed #2563eb;
+  border-radius: 8px;
+  box-sizing: border-box;
+  padding: 1.5rem 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #111827;
+  position: relative;
+  margin: 2rem auto;
+}
+
+.layout-pedido-data {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  font-size: 1.2rem;
+  color: #2563eb;
+  font-weight: 700;
+  font-size: 25px;
+  user-select: none;
+}
+
+.layout-pedido-info-container {
+  margin-top: 1.5rem;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.layout-pedido-info-title {
+  margin-top: 1.2rem;
+  margin-bottom: 0.7rem;
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: #2563eb;
+  user-select: none;
+}
+
+.layout-pedido-info-text {
+  margin-bottom: 0.4rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}

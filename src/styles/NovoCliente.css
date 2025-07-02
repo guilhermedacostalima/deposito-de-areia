@@ -1,0 +1,94 @@
+form {
+  max-width: 800px;
+  margin: 30px auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.08);
+  font-family: Arial, sans-serif;
+}
+
+.form-group {
+  margin-bottom: 10px;
+  display: inline-block;
+  vertical-align: top;
+  width: 48%;
+  box-sizing: border-box;
+  padding: 4px;
+}
+
+.form-group-full {
+  width: 100%;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 6px;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* Tamanhos personalizados */
+.form-group.cod {
+  width: 20%;
+}
+
+.form-group.cliente {
+  width: 50%;
+}
+
+.form-group.numero {
+  width: 20%;
+}
+
+.form-group.bairro {
+  width: 60%;
+}
+
+.form-group.cidade {
+  width: 35%;
+}
+
+/* Contato - linha cheia, input menor */
+.form-group.contato {
+  width: 100%;       /* ocupa linha toda */
+  display: block;    /* força linha nova */
+  padding: 4px 0 4px 4px; /* só um ajuste de padding lateral */
+}
+
+.form-group.contato input {
+  width: 40%;        /* input menor */
+  padding: 6px;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+button[type="submit"] {
+  margin-top: 15px;
+  background-color: #007bff;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}
