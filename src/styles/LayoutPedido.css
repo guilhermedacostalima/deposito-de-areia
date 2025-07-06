@@ -1,14 +1,14 @@
 .layout-pedido-container {
-  width: 559px;  /* A6 deitada */
-  height: 396px; /* 105mm */
+  width: 559px;
+  height: 396px;
   background-color: #fff;
   border: 3px dashed #2563eb;
   border-radius: 8px;
   box-sizing: border-box;
-  padding: 0.5rem 1rem; /* padding mais compacto */
+  padding: 0.5rem 1rem;
   color: #111827;
   position: relative;
-  margin: 1.5rem auto 2.5rem; /* menos espaço embaixo */
+  margin: 1.5rem auto 2.5rem;
 }
 
 .layout-pedido-data {
@@ -21,23 +21,19 @@
 }
 
 .layout-pedido-info-container {
-  margin-top: -0.8rem; /* puxado um pouco mais pra cima */
+  margin-top: -0.8rem;
   font-size: 0.85rem;
   line-height: 1.2;
 }
 
-.cliente-container {
-  line-height: 1.6em;
-}
-
-/* Bordas em cima e embaixo, sem arredondamento */
 .cliente-container,
-.endereco-container {
+.endereco-container,
+.material-container {
   border-top: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
   border-radius: 0;
-  padding: 0.4rem 0.8rem; /* padding mais apertado */
-  margin-bottom: 0.6rem; /* menos espaço entre blocos */
+  padding: 0.4rem 0.8rem;
+  margin-bottom: 0.6rem;
 }
 
 .layout-pedido-info-title {
@@ -48,56 +44,47 @@
   margin-bottom: 0.3rem;
 }
 
-/* Espaçamento maior só no título Endereço */
-.endereco-container > .layout-pedido-info-title {
-  margin-bottom: 0.6rem;
-}
-
-.layout-pedido-info-text {
-  margin-bottom: 0.15rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
 .idcliente-responsavel-group {
-  gap: 5.2rem;
-  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .cliente-responsavel-subgroup {
   display: flex;
-  gap: 10rem;
+  gap: 4rem;
   align-items: center;
+  flex-wrap: nowrap;
+}
+
+.cliente-responsavel-subgroup span {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .grupo-endereco-detalhes {
+  display: flex;
   flex-direction: column;
   gap: 0.25rem;
-  margin-top: -0.3rem; /* puxa o endereço mais pra cima */
+  margin-top: -0.3rem;
 }
 
-.numerobairro-group {
-  display: flex;
-  gap: 10rem;
-}
-
+.numerobairro-group,
 .cidadecontato-group {
   display: flex;
-  gap: 10.5rem;
+  gap: 1rem;
 }
 
-/* === Estilos do container Material === */
-.material-container {
-  margin-top: 1rem;
-  padding: 0.5rem 0.8rem;
-  border-top: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
-  border-radius: 0;
-  font-size: 0.85rem;
-  color: #111827;
+.numerobairro-group span,
+.cidadecontato-group span {
+  flex: 1;
+  min-width: 120px;
 }
 
+/* === MATERIAL === */
 .material-title {
   font-weight: 700;
   font-size: 1rem;
@@ -107,10 +94,16 @@
 
 .material-header {
   display: flex;
+  gap: 0.7rem;
   font-weight: 700;
   border-bottom: 1px solid #ccc;
   padding-bottom: 0.3rem;
+}
+
+.material-row {
+  display: flex;
   gap: 0.7rem;
+  font-weight: normal;
 }
 
 .material-col {
@@ -134,4 +127,67 @@
 .material-total {
   flex: 1.5;
   text-align: right;
+}
+
+/* Linha final após a lista de materiais */
+.material-footer-line {
+  border-bottom: 1px solid #ccc;
+  margin-top: 0.3rem;
+}
+
+/* TOTAL GERAL */
+.total-geral {
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-align: right;
+  margin-top: 0.3rem;
+}
+
+/* Linha dos inputs do novo produto */
+.produto-linha.novo-produto {
+  display: flex;
+  gap: 0.7rem;
+  margin-top: 0.5rem;
+  align-items: center;
+}
+
+.produto-linha.novo-produto select,
+.produto-linha.novo-produto input {
+  padding: 0.2rem;
+  font-size: 0.85rem;
+  box-sizing: border-box;
+}
+
+.produto-linha.novo-produto select {
+  flex: 3;
+}
+
+.produto-linha.novo-produto input[name="quantidade"] {
+  flex: 1;
+  text-align: center;
+}
+
+.produto-linha.novo-produto input[name="valorUnitario"] {
+  flex: 1.5;
+  text-align: right;
+}
+
+.produto-linha.novo-produto input[placeholder="Total"] {
+  flex: 1.5;
+  text-align: right;
+}
+
+.btn-adicionar {
+  flex-shrink: 0;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.85rem;
+}
+
+/* Texto Recebido */
+.texto-recebido {
+  text-align: center;
+  margin-top: 1rem;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #111827;
 }

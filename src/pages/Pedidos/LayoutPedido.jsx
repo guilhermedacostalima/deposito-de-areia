@@ -9,7 +9,7 @@ function InfoLine({ label, value }) {
   );
 }
 
-export default function LayoutPedido({ pedido }) {
+export default function LayoutPedido({ pedido, produtos }) {
   if (!pedido) return null;
 
   const hoje = new Date().toLocaleDateString('pt-BR', {
@@ -18,16 +18,21 @@ export default function LayoutPedido({ pedido }) {
     year: 'numeric',
   });
 
+  const totalGeral = produtos.reduce((acc, p) => {
+    const qtd = Number(p.quantidade);
+    const valor = Number(p.valorUnitario);
+    return acc + (isNaN(qtd) || isNaN(valor) ? 0 : qtd * valor);
+  }, 0);
+
   return (
     <div className="layout-pedido-container">
       <div className="layout-pedido-data">{hoje}</div>
 
       <div className="layout-pedido-info-container">
-        {/* Dados do Cliente com borda */}
         <div className="cliente-container">
           <div className="layout-pedido-info-title">DADOS DO CLIENTE</div>
           <div className="layout-pedido-info-text idcliente-responsavel-group">
-            <InfoLine label="ID" value={pedido.id} />
+            <InfoLine label="Pedido" value={pedido.id} />
             <div className="cliente-responsavel-subgroup">
               <InfoLine label="Cliente" value={pedido.cliente} />
               <InfoLine label="Responsável" value={pedido.responsavel} />
@@ -35,7 +40,6 @@ export default function LayoutPedido({ pedido }) {
           </div>
         </div>
 
-        {/* Endereço com borda */}
         <div className="endereco-container">
           <div className="layout-pedido-info-title">ENDEREÇO</div>
           <div className="layout-pedido-info-text grupo-endereco-detalhes">
@@ -52,7 +56,6 @@ export default function LayoutPedido({ pedido }) {
         </div>
       </div>
 
-      {/* Container Material */}
       <div className="material-container">
         <div className="material-title">MATERIAL</div>
         <div className="material-header">
@@ -61,8 +64,24 @@ export default function LayoutPedido({ pedido }) {
           <span className="material-col material-unit-value">Valor Unt</span>
           <span className="material-col material-total">Total</span>
         </div>
-        {/* Aqui depois você pode mapear os materiais do pedido */}
+
+        {produtos && produtos.map((p, index) => (
+          <div key={index} className="material-row">
+            <span className="material-col material-name">{p.material}</span>
+            <span className="material-col material-qty">{p.quantidade}</span>
+            <span className="material-col material-unit-value">
+              R${Number(p.valorUnitario).toFixed(2)}
+            </span>
+            <span className="material-col material-total">
+              R${(Number(p.quantidade) * Number(p.valorUnitario)).toFixed(2)}
+            </span>
+          </div>
+        ))}
+
+        <div className="material-footer-line" />
+        <div className="total-geral">Total R${totalGeral.toFixed(2)}</div>
       </div>
+      
     </div>
   );
 }

@@ -35,6 +35,7 @@ export default function NovoPedido() {
 
   const [produtos, setProdutos] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
+  const [mostrarResumo, setMostrarResumo] = useState(false);
 
   function handlePedidoChange(e) {
     const { name, value } = e.target;
@@ -64,6 +65,7 @@ export default function NovoPedido() {
     } else {
       setProdutos((prev) => [...prev, novoProduto]);
     }
+
     setNovoProduto({ material: materiaisOpcoes[0], quantidade: '', valorUnitario: '' });
   }
 
@@ -168,7 +170,6 @@ export default function NovoPedido() {
             onChange={handleNovoProdutoChange}
             min="0"
           />
-
           <input
             type="number"
             name="valorUnitario"
@@ -178,23 +179,15 @@ export default function NovoPedido() {
             min="0"
             step="0.01"
           />
-
           <input
             type="number"
             name="total"
             placeholder="Total"
-            value={calcularTotal(
-              novoProduto.quantidade,
-              novoProduto.valorUnitario
-            ).toFixed(2)}
+            value={calcularTotal(novoProduto.quantidade, novoProduto.valorUnitario).toFixed(2)}
             readOnly
           />
 
-          <button
-            type="button"
-            onClick={adicionarProduto}
-            className="btn-adicionar"
-          >
+          <button type="button" onClick={adicionarProduto} className="btn-adicionar">
             {editIndex !== null ? 'Atualizar' : 'Adicionar'}
           </button>
         </div>
@@ -209,7 +202,6 @@ export default function NovoPedido() {
 
         {produtos.map((produto, index) => {
           const isEditing = editIndex === index;
-
           return (
             <div key={index} className="produto-linha">
               <div className="col material">
@@ -272,11 +264,7 @@ export default function NovoPedido() {
               <div className="col acoes">
                 {isEditing ? (
                   <>
-                    <button
-                      type="button"
-                      className="btn-adicionar"
-                      onClick={adicionarProduto}
-                    >
+                    <button type="button" className="btn-adicionar" onClick={adicionarProduto}>
                       Salvar
                     </button>
                     <button
@@ -302,11 +290,7 @@ export default function NovoPedido() {
                     >
                       Editar
                     </button>
-                    <button
-                      type="button"
-                      className="btn-remover"
-                      onClick={() => removerProduto(index)}
-                    >
+                    <button type="button" className="btn-remover" onClick={() => removerProduto(index)}>
                       Remover
                     </button>
                   </>
@@ -316,12 +300,14 @@ export default function NovoPedido() {
           );
         })}
 
-        <div className="total-geral">
-          Total R${totalGeral.toFixed(2)}
-        </div>
-      </form>
-      <LayoutPedido pedido={pedido} />
+        <div className="total-geral">Total R${totalGeral.toFixed(2)}</div>
 
+        <button type="button" className="btn-fazer-pedido" onClick={() => setMostrarResumo(true)}>
+          Fazer Pedido
+        </button>
+      </form>
+
+      {mostrarResumo && <LayoutPedido pedido={pedido} produtos={produtos} />}
     </div>
   );
 }
