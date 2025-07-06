@@ -303,7 +303,7 @@ export default function NovoPedido() {
         <div className="total-geral">Total R${totalGeral.toFixed(2)}</div>
 
         <button type="button" className="btn-fazer-pedido" onClick={() => setMostrarResumo(true)}>
-          Fazer Pedido
+          Gerar 
         </button>
       </form>
 
