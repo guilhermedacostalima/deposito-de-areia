@@ -37,6 +37,9 @@ export default function NovoPedido() {
   const [editIndex, setEditIndex] = useState(null);
   const [mostrarResumo, setMostrarResumo] = useState(false);
 
+  // Estado novo para mostrar/esconder preço
+  const [mostrarPreco, setMostrarPreco] = useState(true);
+
   function handlePedidoChange(e) {
     const { name, value } = e.target;
     setPedido((prev) => ({ ...prev, [name]: value }));
@@ -82,6 +85,11 @@ export default function NovoPedido() {
     0
   );
 
+  // Função para toggle Mostrar/Esconder preço
+  function toggleMostrarPreco() {
+    setMostrarPreco((prev) => !prev);
+  }
+
   return (
     <div className="novo-pedido-container">
       <h2>Novo Pedido</h2>
@@ -89,72 +97,21 @@ export default function NovoPedido() {
       <form className="novo-pedido-form" onSubmit={(e) => e.preventDefault()}>
         <legend className="form-title">Dados do Cliente</legend>
         <fieldset className="form-bloco cliente-fieldset">
-          <input
-            type="text"
-            name="id"
-            placeholder="ID"
-            value={pedido.id}
-            onChange={handlePedidoChange}
-          />
-          <input
-            type="text"
-            name="cliente"
-            placeholder="Cliente"
-            value={pedido.cliente}
-            onChange={handlePedidoChange}
-          />
-          <input
-            type="text"
-            name="responsavel"
-            placeholder="Responsável"
-            value={pedido.responsavel}
-            onChange={handlePedidoChange}
-          />
-          <input
-            type="text"
-            name="endereco"
-            placeholder="Endereço"
-            value={pedido.endereco}
-            onChange={handlePedidoChange}
-          />
-          <input
-            type="text"
-            name="numero"
-            placeholder="Número"
-            value={pedido.numero}
-            onChange={handlePedidoChange}
-          />
-          <input
-            type="text"
-            name="bairro"
-            placeholder="Bairro"
-            value={pedido.bairro}
-            onChange={handlePedidoChange}
-          />
-          <input
-            type="text"
-            name="cidade"
-            placeholder="Cidade"
-            value={pedido.cidade}
-            onChange={handlePedidoChange}
-          />
-          <input
-            type="text"
-            name="contato"
-            placeholder="Contato"
-            value={pedido.contato}
-            onChange={handlePedidoChange}
-          />
+          {/* ... seus inputs aqui (igual o que já tem) */}
+          <input type="text" name="id" placeholder="ID" value={pedido.id} onChange={handlePedidoChange} />
+          <input type="text" name="cliente" placeholder="Cliente" value={pedido.cliente} onChange={handlePedidoChange} />
+          <input type="text" name="responsavel" placeholder="Responsável" value={pedido.responsavel} onChange={handlePedidoChange} />
+          <input type="text" name="endereco" placeholder="Endereço" value={pedido.endereco} onChange={handlePedidoChange} />
+          <input type="text" name="numero" placeholder="Número" value={pedido.numero} onChange={handlePedidoChange} />
+          <input type="text" name="bairro" placeholder="Bairro" value={pedido.bairro} onChange={handlePedidoChange} />
+          <input type="text" name="cidade" placeholder="Cidade" value={pedido.cidade} onChange={handlePedidoChange} />
+          <input type="text" name="contato" placeholder="Contato" value={pedido.contato} onChange={handlePedidoChange} />
         </fieldset>
 
         <legend className="form-title">Produtos do Pedido</legend>
 
         <div className="produto-linha novo-produto">
-          <select
-            name="material"
-            value={novoProduto.material}
-            onChange={handleNovoProdutoChange}
-          >
+          <select name="material" value={novoProduto.material} onChange={handleNovoProdutoChange}>
             {materiaisOpcoes.map((mat) => (
               <option key={mat} value={mat}>
                 {mat}
@@ -206,11 +163,7 @@ export default function NovoPedido() {
             <div key={index} className="produto-linha">
               <div className="col material">
                 {isEditing ? (
-                  <select
-                    name="material"
-                    value={novoProduto.material}
-                    onChange={handleNovoProdutoChange}
-                  >
+                  <select name="material" value={novoProduto.material} onChange={handleNovoProdutoChange}>
                     {materiaisOpcoes.map((mat) => (
                       <option key={mat} value={mat}>
                         {mat}
@@ -302,12 +255,36 @@ export default function NovoPedido() {
 
         <div className="total-geral">Total R${totalGeral.toFixed(2)}</div>
 
-        <button type="button" className="btn-fazer-pedido" onClick={() => setMostrarResumo(true)}>
-          Gerar 
-        </button>
+        <div className="botao-container">
+          <button type="button" className="btn-fazer-pedido" onClick={() => setMostrarResumo(true)}>
+            Gerar
+          </button>
+        </div>
       </form>
 
-      {mostrarResumo && <LayoutPedido pedido={pedido} produtos={produtos} />}
+      {/* Só mostra o layout se mostrarResumo for true */}
+      {mostrarResumo && (
+        <>
+          <LayoutPedido pedido={pedido} produtos={produtos} mostrarPreco={mostrarPreco} />
+
+          <div className="botoes-abaixo-layout">
+            <button className="btn-toggle" onClick={toggleMostrarPreco}>
+              {mostrarPreco ? 'Esconder Preço' : 'Mostrar Preço'}
+            </button>
+
+            <button
+              className="btn-fazer-pedido"
+              onClick={() => alert('Pedido enviado! (implemente a lógica aqui)')}
+            >
+              Fazer Pedido
+            </button>
+
+            <button className="btn-fazer-pedido" onClick={() => window.print()}>
+              Imprimir
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 }

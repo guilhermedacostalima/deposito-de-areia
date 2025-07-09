@@ -141,6 +141,16 @@
   font-size: 1.1rem;
   text-align: right;
   margin-top: 0.3rem;
+  position: relative;
+  padding-right: 4.5rem; /* espaço para o valor */
+}
+
+.total-geral-valor {
+  position: absolute;
+  right: 0.1rem;
+  top: 0;
+  min-width: 80px;
+  text-align: right;
 }
 
 /* Linha dos inputs do novo produto */

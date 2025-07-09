@@ -92,3 +92,34 @@ button[type="submit"] {
 button[type="submit"]:hover {
   background-color: #0056b3;
 }
+.botao-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;         /* Garantindo que o container ocupe toda a largura */
+  margin-top: 1.5rem;
+}
+
+.btn-fazer-pedido {
+  background-color: #007bff;
+  color: white;
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  display: inline-block;
+  width: auto !important;
+  max-width: fit-content;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-fazer-pedido:hover {
+  background-color: #4338ca;
+  transform: translateY(-1px);
+}
+
+.btn-fazer-pedido:active {
+  transform: scale(0.96);
+}

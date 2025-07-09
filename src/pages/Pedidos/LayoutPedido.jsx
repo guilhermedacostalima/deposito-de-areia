@@ -9,7 +9,7 @@ function InfoLine({ label, value }) {
   );
 }
 
-export default function LayoutPedido({ pedido, produtos }) {
+export default function LayoutPedido({ pedido, produtos, mostrarPreco }) {
   if (!pedido) return null;
 
   const hoje = new Date().toLocaleDateString('pt-BR', {
@@ -18,11 +18,13 @@ export default function LayoutPedido({ pedido, produtos }) {
     year: 'numeric',
   });
 
-  const totalGeral = produtos.reduce((acc, p) => {
-    const qtd = Number(p.quantidade);
-    const valor = Number(p.valorUnitario);
-    return acc + (isNaN(qtd) || isNaN(valor) ? 0 : qtd * valor);
-  }, 0);
+  const totalGeral = mostrarPreco
+    ? produtos.reduce((acc, p) => {
+        const qtd = Number(p.quantidade);
+        const valor = Number(p.valorUnitario);
+        return acc + (isNaN(qtd) || isNaN(valor) ? 0 : qtd * valor);
+      }, 0)
+    : 0;
 
   return (
     <div className="layout-pedido-container">
@@ -65,23 +67,31 @@ export default function LayoutPedido({ pedido, produtos }) {
           <span className="material-col material-total">Total</span>
         </div>
 
-        {produtos && produtos.map((p, index) => (
-          <div key={index} className="material-row">
-            <span className="material-col material-name">{p.material}</span>
-            <span className="material-col material-qty">{p.quantidade}</span>
-            <span className="material-col material-unit-value">
-              R${Number(p.valorUnitario).toFixed(2)}
-            </span>
-            <span className="material-col material-total">
-              R${(Number(p.quantidade) * Number(p.valorUnitario)).toFixed(2)}
-            </span>
-          </div>
-        ))}
+        {produtos &&
+          produtos.map((p, index) => (
+            <div key={index} className="material-row">
+              <span className="material-col material-name">{p.material}</span>
+              <span className="material-col material-qty">{p.quantidade}</span>
+
+              <span className="material-col material-unit-value">
+                {mostrarPreco ? `R$${Number(p.valorUnitario).toFixed(2)}` : ''}
+              </span>
+
+              <span className="material-col material-total">
+                {mostrarPreco ? `R$${(Number(p.quantidade) * Number(p.valorUnitario)).toFixed(2)}` : ''}
+              </span>
+            </div>
+          ))}
 
         <div className="material-footer-line" />
-        <div className="total-geral">Total R${totalGeral.toFixed(2)}</div>
+
+        <div className="total-geral">
+          Total R$
+          <span className="total-geral-valor">
+            {mostrarPreco ? totalGeral.toFixed(2) : ''}
+          </span>
+        </div>
       </div>
-      
     </div>
   );
 }
