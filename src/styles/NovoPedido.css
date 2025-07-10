@@ -56,12 +56,11 @@
 /* Campo ID menor */
 .cliente-fieldset input[name="id"] {
   grid-column: 1 / 3;
-  padding: 0.45rem 0.9rem;     /* igual ao cliente/responsável */
-  height: 40px;                /* igual ao cliente/responsável */
+  padding: 0.45rem 0.9rem;
+  height: 40px;
   font-size: 1rem;
   margin-top: 15px;
 }
-
 
 /* Cliente e Responsável iguais lado a lado */
 .cliente-fieldset input[name="cliente"],
@@ -200,7 +199,7 @@
   display: flex;
   justify-content: center;
   gap: 1rem;
-  margin-top: 1rem;
+  margin-top: 1.5rem;
 }
 
 .botoes-container button {
@@ -213,7 +212,8 @@
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  min-width: 120px;
+  min-width: 130px;
+  box-sizing: border-box;
 }
 
 .botoes-container button:hover {
@@ -307,7 +307,8 @@
 
 /* Botões dos produtos */
 .btn-editar,
-.btn-adicionar,.btn-remover {
+.btn-adicionar,
+.btn-remover {
   background-color: #2563eb;
   color: white;
   border: none;
@@ -417,5 +418,45 @@ button:active,
 
   .produtos-cabecalho .acoes {
     width: 100%;
+  }
+}
+
+/* Impressão */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  #print-layout-container,
+  #print-layout-container * {
+    visibility: visible;
+  }
+
+  #print-layout-container {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    margin: auto;
+    width: 105mm;
+    height: 148mm;
+    padding: 10mm;
+    box-sizing: border-box;
+    background: white;
+
+    display: flex;
+    flex-direction: column;
+  }
+
+  #print-layout-container > * {
+    flex-grow: 1;
+  }
+
+  /* Esconder os botões no print sem afetar o layout da tela */
+  .botoes-abaixo-layout {
+    display: none !important;
+  }
+
+  @page {
+    size: A6 portrait;
+    margin: 0;
   }
 }

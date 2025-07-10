@@ -36,8 +36,6 @@ export default function NovoPedido() {
   const [produtos, setProdutos] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
   const [mostrarResumo, setMostrarResumo] = useState(false);
-
-  // Estado novo para mostrar/esconder preço
   const [mostrarPreco, setMostrarPreco] = useState(true);
 
   function handlePedidoChange(e) {
@@ -85,7 +83,6 @@ export default function NovoPedido() {
     0
   );
 
-  // Função para toggle Mostrar/Esconder preço
   function toggleMostrarPreco() {
     setMostrarPreco((prev) => !prev);
   }
@@ -97,7 +94,6 @@ export default function NovoPedido() {
       <form className="novo-pedido-form" onSubmit={(e) => e.preventDefault()}>
         <legend className="form-title">Dados do Cliente</legend>
         <fieldset className="form-bloco cliente-fieldset">
-          {/* ... seus inputs aqui (igual o que já tem) */}
           <input type="text" name="id" placeholder="ID" value={pedido.id} onChange={handlePedidoChange} />
           <input type="text" name="cliente" placeholder="Cliente" value={pedido.cliente} onChange={handlePedidoChange} />
           <input type="text" name="responsavel" placeholder="Responsável" value={pedido.responsavel} onChange={handlePedidoChange} />
@@ -113,9 +109,7 @@ export default function NovoPedido() {
         <div className="produto-linha novo-produto">
           <select name="material" value={novoProduto.material} onChange={handleNovoProdutoChange}>
             {materiaisOpcoes.map((mat) => (
-              <option key={mat} value={mat}>
-                {mat}
-              </option>
+              <option key={mat} value={mat}>{mat}</option>
             ))}
           </select>
 
@@ -165,9 +159,7 @@ export default function NovoPedido() {
                 {isEditing ? (
                   <select name="material" value={novoProduto.material} onChange={handleNovoProdutoChange}>
                     {materiaisOpcoes.map((mat) => (
-                      <option key={mat} value={mat}>
-                        {mat}
-                      </option>
+                      <option key={mat} value={mat}>{mat}</option>
                     ))}
                   </select>
                 ) : (
@@ -217,9 +209,7 @@ export default function NovoPedido() {
               <div className="col acoes">
                 {isEditing ? (
                   <>
-                    <button type="button" className="btn-adicionar" onClick={adicionarProduto}>
-                      Salvar
-                    </button>
+                    <button type="button" className="btn-adicionar" onClick={adicionarProduto}>Salvar</button>
                     <button
                       type="button"
                       className="btn-remover"
@@ -265,9 +255,12 @@ export default function NovoPedido() {
       {/* Só mostra o layout se mostrarResumo for true */}
       {mostrarResumo && (
         <>
-          <LayoutPedido pedido={pedido} produtos={produtos} mostrarPreco={mostrarPreco} />
+          {/* Container com id para impressão */}
+          <div id="print-layout-container">
+            <LayoutPedido pedido={pedido} produtos={produtos} mostrarPreco={mostrarPreco} />
+          </div>
 
-          <div className="botoes-abaixo-layout">
+          <div className="botoes-container">
             <button className="btn-toggle" onClick={toggleMostrarPreco}>
               {mostrarPreco ? 'Esconder Preço' : 'Mostrar Preço'}
             </button>
