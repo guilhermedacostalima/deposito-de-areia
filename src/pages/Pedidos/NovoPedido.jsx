@@ -17,7 +17,7 @@ const materiaisOpcoes = [
 
 export default function NovoPedido() {
   const [pedido, setPedido] = useState({
-    id: '',
+    idCliente: '',
     cliente: '',
     responsavel: '',
     endereco: '',
@@ -38,9 +38,36 @@ export default function NovoPedido() {
   const [mostrarResumo, setMostrarResumo] = useState(false);
   const [mostrarPreco, setMostrarPreco] = useState(true);
 
+  async function buscarClientePorId(id) {
+    if (!id) return;
+    try {
+      const resposta = await fetch(`http://localhost:8000/api/clientes/${id}`);
+      if (!resposta.ok) throw new Error('Cliente não encontrado');
+      const cliente = await resposta.json();
+
+      setPedido((prev) => ({
+        ...prev,
+        cliente: cliente.nome,
+        responsavel: cliente.responsavel,
+        endereco: cliente.endereco,
+        numero: cliente.numero,
+        bairro: cliente.bairro,
+        cidade: cliente.cidade,
+        contato: cliente.contato,
+      }));
+    } catch (err) {
+      console.error(err);
+      alert('Cliente não encontrado');
+    }
+  }
+
   function handlePedidoChange(e) {
     const { name, value } = e.target;
     setPedido((prev) => ({ ...prev, [name]: value }));
+
+    if (name === 'idCliente') {
+      buscarClientePorId(value);
+    }
   }
 
   function handleNovoProdutoChange(e) {
@@ -94,14 +121,62 @@ export default function NovoPedido() {
       <form className="novo-pedido-form" onSubmit={(e) => e.preventDefault()}>
         <legend className="form-title">Dados do Cliente</legend>
         <fieldset className="form-bloco cliente-fieldset">
-          <input type="text" name="id" placeholder="ID" value={pedido.id} onChange={handlePedidoChange} />
-          <input type="text" name="cliente" placeholder="Cliente" value={pedido.cliente} onChange={handlePedidoChange} />
-          <input type="text" name="responsavel" placeholder="Responsável" value={pedido.responsavel} onChange={handlePedidoChange} />
-          <input type="text" name="endereco" placeholder="Endereço" value={pedido.endereco} onChange={handlePedidoChange} />
-          <input type="text" name="numero" placeholder="Número" value={pedido.numero} onChange={handlePedidoChange} />
-          <input type="text" name="bairro" placeholder="Bairro" value={pedido.bairro} onChange={handlePedidoChange} />
-          <input type="text" name="cidade" placeholder="Cidade" value={pedido.cidade} onChange={handlePedidoChange} />
-          <input type="text" name="contato" placeholder="Contato" value={pedido.contato} onChange={handlePedidoChange} />
+          <input
+            type="text"
+            name="idCliente"
+            placeholder="ID Cliente"
+            value={pedido.idCliente}
+            onChange={handlePedidoChange}
+          />
+          <input
+            type="text"
+            name="cliente"
+            placeholder="Cliente"
+            value={pedido.cliente}
+            onChange={handlePedidoChange}
+          />
+          <input
+            type="text"
+            name="responsavel"
+            placeholder="Responsável"
+            value={pedido.responsavel}
+            onChange={handlePedidoChange}
+          />
+          <input
+            type="text"
+            name="endereco"
+            placeholder="Endereço"
+            value={pedido.endereco}
+            onChange={handlePedidoChange}
+          />
+          <input
+            type="text"
+            name="numero"
+            placeholder="Número"
+            value={pedido.numero}
+            onChange={handlePedidoChange}
+          />
+          <input
+            type="text"
+            name="bairro"
+            placeholder="Bairro"
+            value={pedido.bairro}
+            onChange={handlePedidoChange}
+          />
+          <input
+            type="text"
+            name="cidade"
+            placeholder="Cidade"
+            value={pedido.cidade}
+            onChange={handlePedidoChange}
+          />
+          <input
+            type="text"
+            name="contato"
+            placeholder="Contato"
+            value={pedido.contato}
+            onChange={handlePedidoChange}
+          />
         </fieldset>
 
         <legend className="form-title">Produtos do Pedido</legend>
@@ -252,10 +327,8 @@ export default function NovoPedido() {
         </div>
       </form>
 
-      {/* Só mostra o layout se mostrarResumo for true */}
       {mostrarResumo && (
         <>
-          {/* Container com id para impressão */}
           <div id="print-layout-container">
             <LayoutPedido pedido={pedido} produtos={produtos} mostrarPreco={mostrarPreco} />
           </div>

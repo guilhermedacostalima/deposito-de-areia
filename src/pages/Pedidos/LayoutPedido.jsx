@@ -34,7 +34,7 @@ export default function LayoutPedido({ pedido, produtos, mostrarPreco }) {
         <div className="cliente-container">
           <div className="layout-pedido-info-title">DADOS DO CLIENTE</div>
           <div className="layout-pedido-info-text idcliente-responsavel-group">
-            <InfoLine label="Pedido" value={pedido.id} />
+            <InfoLine label="Pedido" value="Será gerado automaticamente" />
             <div className="cliente-responsavel-subgroup">
               <InfoLine label="Cliente" value={pedido.cliente} />
               <InfoLine label="Responsável" value={pedido.responsavel} />
@@ -72,11 +72,9 @@ export default function LayoutPedido({ pedido, produtos, mostrarPreco }) {
             <div key={index} className="material-row">
               <span className="material-col material-name">{p.material}</span>
               <span className="material-col material-qty">{p.quantidade}</span>
-
               <span className="material-col material-unit-value">
                 {mostrarPreco ? `R$${Number(p.valorUnitario).toFixed(2)}` : ''}
               </span>
-
               <span className="material-col material-total">
                 {mostrarPreco ? `R$${(Number(p.quantidade) * Number(p.valorUnitario)).toFixed(2)}` : ''}
               </span>
@@ -86,9 +84,9 @@ export default function LayoutPedido({ pedido, produtos, mostrarPreco }) {
         <div className="material-footer-line" />
 
         <div className="total-geral">
-          Total R$
-          <span className="total-geral-valor">
-            {mostrarPreco ? totalGeral.toFixed(2) : ''}
+          <span>Total R$</span>
+          <span className={`total-geral-valor ${mostrarPreco ? '' : 'vazio'}`}>
+            {mostrarPreco ? totalGeral.toFixed(2) : '000,00'}
           </span>
         </div>
       </div>

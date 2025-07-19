@@ -118,17 +118,27 @@
   margin-top: 4px;
 }
 
+/* Ajuste para travar o total R$ */
 .total-geral {
-  text-align: right;
+  display: flex;
+  justify-content: flex-end; /* alinhado à direita */
   font-weight: bold;
   margin-top: 4px;
   font-size: 0.95rem;
   color: #111827;
+  gap: 6px; /* espaço entre label e valor */
+  position: relative;
 }
 
 .total-geral-valor {
-  margin-left: 6px;
+  width: 70px; /* largura fixa para evitar deslocamento */
   color: #2563eb;
+  text-align: right;
+}
+
+/* Quando valor não mostrar, esconde mas mantém o espaço */
+.total-geral-valor.vazio {
+  visibility: hidden;
 }
 
 /* ----- IMPRESSÃO ----- */
