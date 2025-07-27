@@ -1,0 +1,75 @@
+.fechamento-container {
+  padding: 30px;
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.btn-print {
+  background-color: #1e90ff;
+  color: white;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  font-size: 16px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.btn-print:hover {
+  background-color: #187bcd;
+}
+
+.pedidos-fechamento {
+  background-color: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.pedido-fechamento {
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+}
+
+.header-pedido {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.materiais-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.materiais-table th, .materiais-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+.total-pedido {
+  margin-top: 10px;
+  font-weight: bold;
+  text-align: right;
+}
+
+.total-geral {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: right;
+  margin-top: 25px;
+  padding-top: 10px;
+  border-top: 2px solid #444;
+}

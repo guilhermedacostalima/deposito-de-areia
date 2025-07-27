@@ -6,6 +6,7 @@ import NovoCliente from './pages/Clientes/NovoCliente.jsx';
 import ListaClientes from './pages/Clientes/ListaClientes.jsx';
 import NovoPedido from './pages/Pedidos/NovoPedido.jsx';
 import ListaPedidos from './pages/Pedidos/ListaPedidos.jsx';
+import Fechamento from './pages/Pedidos/Fechamento.jsx'; // ✅ Importação adicionada
 import RegistrarFrete from './pages/Fretes/RegistrarFrete.jsx';
 import ListaFretes from './pages/Fretes/ListaFretes.jsx';
 import Faturamento from './pages/Faturamento.jsx';
@@ -64,6 +65,7 @@ export default function App() {
           {/* Pedidos */}
           <Route path="/pedidos/novo" element={<NovoPedido />} />
           <Route path="/pedidos/lista" element={<ListaPedidos />} />
+          <Route path="/pedidos/fechamento" element={<Fechamento />} /> {/* ✅ Rota adicionada */}
 
           {/* Funcionários */}
           <Route path="/funcionarios" element={<ListaFuncionarios />} />

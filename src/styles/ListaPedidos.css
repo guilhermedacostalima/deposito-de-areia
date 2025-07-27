@@ -1,0 +1,90 @@
+.lista-pedidos {
+  padding: 20px;
+  font-family: sans-serif;
+}
+
+.filtros-e-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.filtros input,
+.filtros select {
+  margin-right: 10px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.total-geral {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1a1a1a;
+  background-color: #eaeaea;
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
+.bloco-cliente {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+  background: #f9f9f9;
+}
+
+.cabecalho-pedido {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cabecalho-pedido h3 {
+  margin: 0;
+}
+
+.data-pedido {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.endereco {
+  margin: 10px 0;
+}
+
+.materiais table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.materiais th,
+.materiais td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.total {
+  margin-top: 10px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.total button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.total button:hover {
+  background-color: #0056b3;
+}
