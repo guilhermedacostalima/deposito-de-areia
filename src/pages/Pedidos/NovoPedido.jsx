@@ -12,6 +12,7 @@ const materiaisOpcoes = [
   'Pedrisco',
   'Bica Corrida',
   'Pó de pedra',
+  'Frete',
   'Outro',
 ];
 

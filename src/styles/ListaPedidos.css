@@ -72,19 +72,164 @@
   margin-top: 10px;
   font-weight: bold;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end; /* alinhado à direita */
   align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap;
 }
 
+/* Select do status */
+.total select {
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  border: 1px solid #ccc;
+}
+
+/* Botão Editar Pedido sem fundo amarelo, estilo mais neutro */
 .total button {
-  padding: 5px 10px;
+  color: #000000; /* azul padrão */
+  border: 1px solid #007bff;
+  border-radius: 6px;
+  padding: 6px 14px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.total button:hover {
   background-color: #007bff;
+  color: white;
+}
+
+/* Formulário de edição inline */
+
+.edit-pedido-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+/* Label com span para o título alinhado com input */
+.edit-pedido-form label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+}
+
+.edit-pedido-form label span {
+  flex: 0 0 130px; /* largura fixa do título para alinhamento */
+  min-width: 130px;
+}
+
+.edit-pedido-form input,
+.edit-pedido-form select {
+  flex: 1 1 auto;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.edit-pedido-form h4 {
+  margin: 20px 0 8px 0;
+  font-weight: 700;
+}
+
+/* Tabela materiais no formulário */
+.materiais-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 5px;
+}
+
+.materiais-table th,
+.materiais-table td {
+  border: 1px solid #ddd;
+  padding: 6px 10px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.materiais-table select,
+.materiais-table input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+/* Botões dentro da tabela materiais */
+.materiais-table button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.materiais-table button:hover {
+  background-color: #bb2d3b;
+}
+
+/* Botões do formulário salvar/cancelar e adicionar material */
+.edit-pedido-form > button[type='button'] {
+  background-color: #1cd61c;
   color: white;
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+/* Ajuste específico para os botões Salvar e Cancelar com tamanho fixo igual */
+
+.btn-salvar-cancelar {
+  width: 110px;
+  height: 45px;
+  font-weight: 600;
+  font-size: 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  text-align: center;
+  transition: background-color 0.3s ease;
+  user-select: none;
 }
 
-.total button:hover {
+/* Botão Salvar - cor azul */
+.btn-salvar {
+  background-color: #007bff;
+  color: white;
+  margin-right: 15px; /* espaço entre os botões */
+}
+
+.btn-salvar:hover {
   background-color: #0056b3;
+}
+
+/* Botão Cancelar - cor vermelha */
+.btn-cancelar {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-cancelar:hover {
+  background-color: #a71d2a;
+}
+
+/* Container que envolve os dois botões, para alinhamento flex */
+.edit-pedido-form > div.botao-grupo {
+  display: flex;
+  justify-content: flex-start;
+  gap: 0; /* o margin-right no btn-salvar já dá espaçamento */
+  margin-top: 20px;
 }
