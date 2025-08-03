@@ -34,6 +34,21 @@
   padding: 15px;
   margin-bottom: 20px;
   background: #f9f9f9;
+  border-top-width: 5px;
+  border-top-style: solid;
+}
+
+/* Linhas superiores coloridas por status */
+.bloco-cliente.pendente {
+  border-top-color: #f8bf03; /* amarelo */
+}
+
+.bloco-cliente.pago {
+  border-top-color: #4CAF50; /* verde */
+}
+
+.bloco-cliente.entregue {
+  border-top-color: #2196F3; /* azul */
 }
 
 .cabecalho-pedido {
@@ -76,6 +91,24 @@
   align-items: center;
   gap: 10px;
   flex-wrap: nowrap;
+}
+
+/* Cor do texto do status conforme o status */
+.total em {
+  font-style: normal;
+  font-weight: bold;
+}
+
+.bloco-cliente.pendente .total em {
+  color: #f8bf03; /* amarelo */
+}
+
+.bloco-cliente.pago .total em {
+  color: #4CAF50; /* verde */
+}
+
+.bloco-cliente.entregue .total em {
+  color: #2196F3; /* azul */
 }
 
 /* Select do status */

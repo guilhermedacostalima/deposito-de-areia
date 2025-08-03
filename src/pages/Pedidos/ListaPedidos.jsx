@@ -155,7 +155,7 @@ export default function ListaPedidos() {
   // Fechar pedido (salvar no localStorage e navegar)
   function fazerFechamento() {
     localStorage.setItem('pedidosParaFechamento', JSON.stringify(pedidosFiltrados));
-    navigate('/fechamento');
+    navigate('/pedidos/fechamento');
   }
 
   // Abrir o formulário de edição com os dados do pedido selecionado
@@ -344,7 +344,7 @@ export default function ListaPedidos() {
       </div>
 
       {pedidosFiltrados.map(p => (
-        <div key={p.id} className="bloco-cliente">
+        <div key={p.id} className={`bloco-cliente ${p.status}`}>
           <div className="cabecalho-pedido">
             <h3>
               Pedido #{p.id} - {p.cliente}
@@ -353,7 +353,6 @@ export default function ListaPedidos() {
           </div>
 
           {pedidoEditandoId === p.id ? (
-            // Formulário edição inline
             <form
               className="edit-pedido-form"
               onSubmit={e => {
@@ -511,7 +510,6 @@ export default function ListaPedidos() {
                 Adicionar Material
               </button>
 
-              {/* Botões Salvar e Cancelar dentro do container flex */}
               <div className="botoes-acoes" style={{ marginTop: '20px' }}>
                 <button type="submit" className="btn-salvar-cancelar btn-salvar">
                   Salvar
@@ -575,7 +573,6 @@ export default function ListaPedidos() {
                   <option value="entregue">Entregue</option>
                 </select>
 
-                {/* Botão para abrir edição */}
                 <button
                   onClick={() => abrirEdicao(p)}
                   style={{
@@ -595,6 +592,12 @@ export default function ListaPedidos() {
           )}
         </div>
       ))}
+
+      {pedidosFiltrados.length === 0 && (
+        <p style={{ marginTop: '20px', fontStyle: 'italic' }}>
+          Nenhum pedido encontrado com os filtros selecionados.
+        </p>
+      )}
     </div>
   );
 }

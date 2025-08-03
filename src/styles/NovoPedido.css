@@ -62,7 +62,6 @@
   margin-top: 15px;
 }
 
-
 /* Cliente e Responsável iguais lado a lado */
 .cliente-fieldset input[name="cliente"],
 .cliente-fieldset input[name="responsavel"] {
@@ -375,7 +374,12 @@ button:active,
   color: #111827;
   text-align: right;
   box-sizing: border-box;
+
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
+
 
 /* Estilo para o símbolo R$ fixo antes do valor */
 .preco {

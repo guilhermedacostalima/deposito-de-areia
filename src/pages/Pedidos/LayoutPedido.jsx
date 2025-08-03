@@ -86,7 +86,7 @@ export default function LayoutPedido({ pedido, produtos, mostrarPreco }) {
         <div className="total-geral">
           <span>Total R$</span>
           <span className={`total-geral-valor ${mostrarPreco ? '' : 'vazio'}`}>
-            {mostrarPreco ? totalGeral.toFixed(2) : '000,00'}
+            {mostrarPreco ? totalGeral.toFixed(2) : ''}
           </span>
         </div>
       </div>
