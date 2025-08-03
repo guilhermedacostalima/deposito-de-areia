@@ -465,3 +465,28 @@ button:active,
     margin: 0;
   }
 }
+.grupo-tipo-pedido {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.grupo-tipo-pedido label {
+  font-weight: bold;
+  margin-bottom: 4px;
+  color: #2563eb;
+}
+
+.grupo-tipo-pedido select {
+  padding: 6px 10px;
+  font-size: 1rem;
+  border: 1px solid #2563eb;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.grupo-tipo-pedido select:focus {
+  border-color: #1d4ed8;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}

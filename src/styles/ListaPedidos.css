@@ -266,3 +266,11 @@
   gap: 0; /* o margin-right no btn-salvar já dá espaçamento */
   margin-top: 20px;
 }
+label.tipo-pedido-label {
+  display: flex;
+  justify-content: flex-end; /* empurra o conteúdo para a direita */
+  gap: 10px; /* espaço entre o texto e o select */
+  width: 100%; /* ocupa toda a largura disponível */
+}
+
+

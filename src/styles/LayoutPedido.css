@@ -165,3 +165,12 @@
     box-shadow: none;
   }
 }
+/* Tipo de pedido: "Entrega" ou "Retirado" */
+.layout-pedido-tipo {
+  position: absolute;
+  top: 6mm;
+  left: 8mm;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #2563eb;
+}

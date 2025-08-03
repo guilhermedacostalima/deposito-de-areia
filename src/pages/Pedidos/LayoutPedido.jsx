@@ -38,6 +38,7 @@ export default function LayoutPedido({ pedido, produtos, mostrarPreco }) {
             <div className="cliente-responsavel-subgroup">
               <InfoLine label="Cliente" value={pedido.cliente} />
               <InfoLine label="Responsável" value={pedido.responsavel} />
+              <InfoLine label="Tipo" value={pedido.tipo} />
             </div>
           </div>
         </div>

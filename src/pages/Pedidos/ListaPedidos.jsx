@@ -34,6 +34,7 @@ const pedidosMock = [
     ],
     data: '2025-07-25',
     status: 'pendente',
+    tipoPedido: 'Entrega',
   },
   {
     id: 2,
@@ -52,6 +53,7 @@ const pedidosMock = [
     ],
     data: '2025-07-26',
     status: 'pendente',
+    tipoPedido: 'Retirada',
   },
 ];
 
@@ -88,6 +90,7 @@ export default function ListaPedidos() {
     status: '',
     dataInicio: '',
     dataFim: '',
+    tipoPedido: '',
   });
 
   // Pedido que está sendo editado (id) ou null se nenhum
@@ -107,9 +110,13 @@ export default function ListaPedidos() {
       const clienteMatch =
         clientesSelecionados.length === 0 ||
         clientesSelecionados.some(nome => p.cliente.toLowerCase().includes(nome));
+      const tipoPedidoMatch =
+        !filtros.tipoPedido || p.tipoPedido === filtros.tipoPedido;
+
       return (
         clienteMatch &&
         (!filtros.status || p.status === filtros.status) &&
+        tipoPedidoMatch &&
         isDateInRange(p.data, filtros.dataInicio, filtros.dataFim)
       );
     });
@@ -303,7 +310,7 @@ export default function ListaPedidos() {
             </div>
           </div>
 
-          {/* Filtros status/data */}
+          {/* Filtros status/tipoPedido/data */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <select
               value={filtros.status}
@@ -314,6 +321,16 @@ export default function ListaPedidos() {
               <option value="pago">Pago</option>
               <option value="entregue">Entregue</option>
             </select>
+
+            <select
+              value={filtros.tipoPedido}
+              onChange={e => setFiltros({ ...filtros, tipoPedido: e.target.value })}
+            >
+              <option value="">Todos os Tipos</option>
+              <option value="Entrega">Entrega</option>
+              <option value="Retirada">Retirada</option>
+            </select>
+
             <input
               type="date"
               value={filtros.dataInicio}
@@ -347,7 +364,7 @@ export default function ListaPedidos() {
         <div key={p.id} className={`bloco-cliente ${p.status}`}>
           <div className="cabecalho-pedido">
             <h3>
-              Pedido #{p.id} - {p.cliente}
+              Pedido #{p.id} - {p.cliente} - <em>{p.tipoPedido}</em>
             </h3>
             <span className="data-pedido">{formatDateBR(p.data)}</span>
           </div>
@@ -368,6 +385,21 @@ export default function ListaPedidos() {
                   onChange={e => atualizarCampo('cliente', e.target.value)}
                   required
                 />
+              </label>
+
+              <label className='tipo-pedido-label'>
+                <span>Tipo Pedido:</span>
+                <select
+                  value={pedidoEditando.tipoPedido || ''}
+                  onChange={e => atualizarCampo('tipoPedido', e.target.value)}
+                  required
+                >
+                  <option value="" disabled>
+                    Selecione
+                  </option>
+                  <option value="Entrega">Entrega</option>
+                  <option value="Retirada">Retirada</option>
+                </select>
               </label>
 
               <label>

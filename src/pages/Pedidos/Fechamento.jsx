@@ -42,48 +42,51 @@ function Fechamento() {
       ];
 
       const body = [];
+      const pedidoIndices = []; // Para controlar a cor por pedido
+
       pedidos.forEach((p, pedidoIndex) => {
         p.materiais.forEach((mat, matIndex) => {
-          body.push({
-            row: [
-              matIndex === 0 ? new Date(p.data).toLocaleDateString('pt-BR') : '',
-              matIndex === 0 ? (p.id?.toString() || '') : '',
-              matIndex === 0 ? p.cliente : '',
-              matIndex === 0 ? p.responsavel : '',
-              matIndex === 0
-                ? `${p.endereco.rua}, ${p.endereco.numero} - ${p.endereco.bairro}, ${p.endereco.cidade}`
-                : '',
-              mat.nome,
-              mat.qtd.toString(),
-              'R$ ' + mat.valorUnit.toFixed(2).replace('.', ','),
-              'R$ ' + (mat.qtd * mat.valorUnit).toFixed(2).replace('.', ','),
-              matIndex === p.materiais.length - 1
-                ? 'R$ ' + p.total.toFixed(2).replace('.', ',')
-                : '',
-            ],
-            rowColor: pedidoIndex % 2 === 0,
-          });
+          const enderecoExibir =
+            p.tipoPedido === 'Retirada'
+              ? 'Retirada'
+              : `${p.endereco.rua}, ${p.endereco.numero} - ${p.endereco.bairro}, ${p.endereco.cidade}`;
+
+          body.push([
+            matIndex === 0 ? new Date(p.data).toLocaleDateString('pt-BR') : '',
+            matIndex === 0 ? (p.id?.toString() || '') : '',
+            matIndex === 0 ? p.cliente : '',
+            matIndex === 0 ? p.responsavel : '',
+            matIndex === 0 ? enderecoExibir : '',
+            mat.nome,
+            mat.qtd.toString(),
+            'R$ ' + mat.valorUnit.toFixed(2).replace('.', ','),
+            'R$ ' + (mat.qtd * mat.valorUnit).toFixed(2).replace('.', ','),
+            matIndex === p.materiais.length - 1
+              ? 'R$ ' + p.total.toFixed(2).replace('.', ',')
+              : '',
+          ]);
+          pedidoIndices.push(pedidoIndex);
         });
       });
 
       autoTable(doc, {
         head: headers,
-        body: body.map(obj => obj.row),
+        body: body,
         startY: 60,
         margin: { left: 30, right: 30 },
         styles: { fontSize: 11, cellPadding: 3 },
         headStyles: { fillColor: [0, 123, 255] },
         columnStyles: {
-          0: { cellWidth: 70 },   // Data (aumentado)
-          1: { cellWidth: 45 },   // Pedido
-          2: { cellWidth: 100 },  // Cliente
-          3: { cellWidth: 100 },  // Responsável
-          4: { cellWidth: 150 },  // Endereço
-          5: { cellWidth: 80 },   // Material
-          6: { cellWidth: 25, halign: 'right' },  // Qtd
-          7: { cellWidth: 60, halign: 'right' },  // Valor Unit.
-          8: { cellWidth: 70, halign: 'right' },  // Total Material
-          9: { cellWidth: 70, halign: 'right' },  // Total Pedido
+          0: { cellWidth: 70 },
+          1: { cellWidth: 45 },
+          2: { cellWidth: 100 },
+          3: { cellWidth: 100 },
+          4: { cellWidth: 150 },
+          5: { cellWidth: 80 },
+          6: { cellWidth: 25, halign: 'right' },
+          7: { cellWidth: 60, halign: 'right' },
+          8: { cellWidth: 70, halign: 'right' },
+          9: { cellWidth: 70, halign: 'right' },
         },
         didDrawPage: (data) => {
           const pageCount = doc.internal.getNumberOfPages();
@@ -96,10 +99,14 @@ function Fechamento() {
         },
         didParseCell: (data) => {
           if (data.section === 'body') {
-            const rowColor = body[data.row.index].rowColor;
-            data.cell.styles.fillColor = rowColor ? [245, 245, 245] : [225, 235, 255];
+            const pedidoIndex = pedidoIndices[data.row.index];
+            if (pedidoIndex % 2 === 0) {
+              data.cell.styles.fillColor = [245, 245, 245]; // Cor clara
+            } else {
+              data.cell.styles.fillColor = [225, 235, 255]; // Cor azulada clara
+            }
           }
-        }
+        },
       });
 
       const totalPedidos = pedidos.length;
@@ -122,6 +129,7 @@ function Fechamento() {
   return (
     <div className="fechamento-container">
       <h1>Fechamento de Pedidos</h1>
+
       <div className="fechamento-lista">
         {pedidos.length === 0 ? (
           <p>Nenhum pedido encontrado para fechamento.</p>
@@ -132,9 +140,12 @@ function Fechamento() {
               <p><strong>Responsável:</strong> {pedido.responsavel}</p>
               <p>
                 <strong>Endereço:</strong>{' '}
-                {`${pedido.endereco.rua}, ${pedido.endereco.numero} - ${pedido.endereco.bairro}, ${pedido.endereco.cidade}`}
+                {pedido.tipoPedido === 'Retirada'
+                  ? 'Retirada'
+                  : `${pedido.endereco.rua}, ${pedido.endereco.numero} - ${pedido.endereco.bairro}, ${pedido.endereco.cidade}`}
               </p>
               <p><strong>Data:</strong> {new Date(pedido.data).toLocaleDateString('pt-BR')}</p>
+
               <table>
                 <thead>
                   <tr>
@@ -155,6 +166,7 @@ function Fechamento() {
                   ))}
                 </tbody>
               </table>
+
               <p style={{ marginTop: '8px', fontWeight: 'bold' }}>
                 Total do Pedido: R$ {pedido.total.toFixed(2).replace('.', ',')}
               </p>

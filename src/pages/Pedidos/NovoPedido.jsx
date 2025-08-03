@@ -26,6 +26,7 @@ export default function NovoPedido() {
     bairro: '',
     cidade: '',
     contato: '',
+    tipo: 'Entrega', // novo campo
   });
 
   const [novoProduto, setNovoProduto] = useState({
@@ -179,6 +180,20 @@ export default function NovoPedido() {
             onChange={handlePedidoChange}
           />
         </fieldset>
+
+        {/* Campo Tipo de Pedido fora do container "Dados do Cliente" */}
+        <div className="grupo-tipo-pedido centralizado">
+          <label htmlFor="tipo">Tipo de Pedido:</label>
+          <select
+            id="tipo"
+            name="tipo"
+            value={pedido.tipo}
+            onChange={handlePedidoChange}
+          >
+            <option value="Entrega">Entrega</option>
+            <option value="Retirada">Retirada</option>
+          </select>
+        </div>
 
         <legend className="form-title">Produtos do Pedido</legend>
 
