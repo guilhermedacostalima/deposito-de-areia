@@ -28,6 +28,7 @@ export default function LayoutPedido({ pedido, produtos, mostrarPreco }) {
 
   return (
     <div className="layout-pedido-container">
+      <div className="layout-pedido-tipo">{pedido.tipo}</div>
       <div className="layout-pedido-data">{hoje}</div>
 
       <div className="layout-pedido-info-container">
@@ -38,7 +39,6 @@ export default function LayoutPedido({ pedido, produtos, mostrarPreco }) {
             <div className="cliente-responsavel-subgroup">
               <InfoLine label="Cliente" value={pedido.cliente} />
               <InfoLine label="Responsável" value={pedido.responsavel} />
-              <InfoLine label="Tipo" value={pedido.tipo} />
             </div>
           </div>
         </div>
@@ -64,7 +64,7 @@ export default function LayoutPedido({ pedido, produtos, mostrarPreco }) {
         <div className="material-header">
           <span className="material-col material-name">Material</span>
           <span className="material-col material-qty">Qtd</span>
-          <span className="material-col material-unit-value">Valor Unt</span>
+          <span className="material-col material-unit-value">Valor Unit</span>
           <span className="material-col material-total">Total</span>
         </div>
 

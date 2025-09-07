@@ -380,7 +380,6 @@ button:active,
   box-shadow: none !important;
 }
 
-
 /* Estilo para o símbolo R$ fixo antes do valor */
 .preco {
   white-space: nowrap;
@@ -426,7 +425,7 @@ button:active,
   }
 }
 
-/* Impressão */
+/* Impressão A6 deitada */
 @media print {
   body * {
     visibility: hidden;
@@ -441,12 +440,11 @@ button:active,
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
     margin: auto;
-    width: 105mm;
-    height: 148mm;
+    width: 148mm;
+    height: 105mm;
     padding: 10mm;
     box-sizing: border-box;
     background: white;
-
     display: flex;
     flex-direction: column;
   }
@@ -455,16 +453,17 @@ button:active,
     flex-grow: 1;
   }
 
-  /* Esconder os botões no print sem afetar o layout da tela */
   .botoes-abaixo-layout {
     display: none !important;
   }
 
   @page {
-    size: A6 portrait;
+    size: A6 landscape;
     margin: 0;
   }
 }
+
+/* Tipo de pedido */
 .grupo-tipo-pedido {
   display: flex;
   flex-direction: column;

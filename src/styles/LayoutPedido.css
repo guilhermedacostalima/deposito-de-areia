@@ -1,8 +1,7 @@
 /* ----- ESTILO GLOBAL: tela + impressão ----- */
-
 .layout-pedido-container {
-  width: 148mm;
-  height: 105mm;
+  width: 148mm;      /* altura da A6 */
+  height: 105mm;     /* largura da A6 deitado */
   margin: 10px auto;
   padding: 6mm 8mm;
   box-sizing: border-box;
@@ -15,28 +14,39 @@
   line-height: 1.3;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
-/* 📍 DATA NO CANTO SUPERIOR DIREITO */
+/* Tipo de pedido no canto esquerdo */
+.layout-pedido-tipo {
+  position: absolute;
+  top: 6mm;
+  left: 8mm;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #2563eb;
+}
+
+/* Data no canto direito */
 .layout-pedido-data {
   font-weight: bold;
-  font-size: 1.4rem;
+  font-size: 1.1rem;
   color: #2563eb;
   position: absolute;
   top: 6mm;
   right: 8mm;
   margin: 0;
   padding: 0;
-  border: none; /* ❌ Remove a linha abaixo da data */
 }
 
 /* CONTAINER DE INFORMAÇÕES */
 .layout-pedido-info-container {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-top: 18px; /* espaço após data no canto */
-  margin-bottom: 10px;
+  gap: 4px;
+  margin-top: 25px; /* espaço abaixo da data/tipo */
+  margin-bottom: 8px;
 }
 
 .layout-pedido-info-title {
@@ -50,7 +60,7 @@
 .layout-pedido-info-text span {
   display: block;
   margin-bottom: 1px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 .idcliente-responsavel-group,
@@ -64,7 +74,7 @@
 .numerobairro-group,
 .cidadecontato-group {
   display: flex;
-  gap: 6mm;
+  gap: 5mm;
 }
 
 /* MATERIAL */
@@ -88,7 +98,6 @@
   font-size: 0.85rem;
 }
 
-/* ❌ Remove linha do cabeçalho */
 .material-header {
   font-weight: bold;
   color: #1f2937;
@@ -97,46 +106,37 @@
 
 .material-col {
   flex: 1;
-  padding: 0 4px;
+  padding: 0 3px;
   text-align: left;
   word-break: break-word;
 }
 
-.material-name {
-  flex: 2;
-}
-
+.material-name { flex: 2; }
 .material-qty,
 .material-unit-value,
-.material-total {
-  flex: 1;
-  text-align: right;
-}
+.material-total { flex: 1; text-align: right; }
 
 .material-footer-line {
   border-top: 1px solid #2563eb;
   margin-top: 4px;
 }
 
-/* Ajuste para travar o total R$ */
 .total-geral {
   display: flex;
-  justify-content: flex-end; /* alinhado à direita */
+  justify-content: flex-end;
   font-weight: bold;
   margin-top: 4px;
   font-size: 0.95rem;
   color: #111827;
-  gap: 6px; /* espaço entre label e valor */
-  position: relative;
+  gap: 6px;
 }
 
 .total-geral-valor {
-  width: 70px; /* largura fixa para evitar deslocamento */
-  color: #2563eb;
+  width: 70px;
   text-align: right;
+  color: #2563eb;
 }
 
-/* Quando valor não mostrar, esconde mas mantém o espaço */
 .total-geral-valor.vazio {
   visibility: hidden;
 }
@@ -144,7 +144,7 @@
 /* ----- IMPRESSÃO ----- */
 @media print {
   @page {
-    size: 148mm 105mm;
+    size: A6 landscape;
     margin: 0;
   }
 
@@ -161,16 +161,13 @@
     position: fixed;
     top: 0;
     left: 0;
+    width: 100%;
+    height: 100%;
     margin: 0;
+    padding: 6mm 8mm;
     box-shadow: none;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
   }
-}
-/* Tipo de pedido: "Entrega" ou "Retirado" */
-.layout-pedido-tipo {
-  position: absolute;
-  top: 6mm;
-  left: 8mm;
-  font-weight: bold;
-  font-size: 1.1rem;
-  color: #2563eb;
 }
