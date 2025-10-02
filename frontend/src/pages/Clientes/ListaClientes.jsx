@@ -1,125 +1,97 @@
-import { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../../styles/ListaClientes.css';
 
 export default function ListaClientes() {
   const [clientes, setClientes] = useState([]);
-  const [search, setSearch] = useState('');
-  const [pagina, setPagina] = useState(1);
-  const clientesPorPagina = 30;
+  const [q, setQ] = useState('');
+  const [order, setOrder] = useState('id');
+  const [dir, setDir] = useState('asc');
+  const [limit, setLimit] = useState(100);
 
-  // Busca todos os clientes
-  async function fetchClientes() {
+  const fetchClientes = async () => {
     try {
-      const res = await axios.get('http://127.0.0.1:8000/api/clientes/');
-      // Ordena alfabeticamente pelo nome do cliente
-      const ordenados = res.data.sort((a, b) => a.cliente.localeCompare(b.cliente));
-      setClientes(ordenados);
+      const res = await axios.get('http://127.0.0.1:8000/api/clientes/', {
+        params: { q, order, dir, limit },
+      });
+      setClientes(res.data);
     } catch (err) {
       console.error('Erro ao buscar clientes:', err);
-      alert('Erro ao buscar clientes');
+      alert('Erro ao buscar clientes. Veja o console para detalhes.');
     }
-  }
+  };
 
   useEffect(() => {
     fetchClientes();
-  }, []);
-
-  // Filtra clientes de acordo com search
-  const clientesFiltrados = clientes.filter(c =>
-    c.cliente.toLowerCase().includes(search.toLowerCase()) ||
-    c.responsavel.toLowerCase().includes(search.toLowerCase()) ||
-    c.contato.toLowerCase().includes(search.toLowerCase()) ||
-    String(c.id) === search
-  );
-
-  // Paginação
-  const totalPaginas = Math.ceil(clientesFiltrados.length / clientesPorPagina);
-  const clientesPaginaAtual = clientesFiltrados.slice(
-    (pagina - 1) * clientesPorPagina,
-    pagina * clientesPorPagina
-  );
-
-  // Ações de editar/deletar (só exemplo)
-  function editarCliente(cliente) {
-    alert(`Editar cliente ID ${cliente.id} (implementar lógica)`);
-  }
-
-  async function deletarCliente(cliente) {
-    if (!window.confirm(`Deseja deletar o cliente ${cliente.cliente}?`)) return;
-    try {
-      await axios.delete(`http://127.0.0.1:8000/api/clientes/${cliente.id}/`);
-      setClientes(prev => prev.filter(c => c.id !== cliente.id));
-      alert('Cliente deletado!');
-    } catch (err) {
-      console.error(err);
-      alert('Erro ao deletar cliente');
-    }
-  }
+  }, [q, order, dir, limit]);
 
   return (
     <div className="lista-clientes-container">
-      <h2>Clientes Cadastrados</h2>
+      <h2>Lista de Clientes</h2>
 
-      <input
-        type="text"
-        placeholder="Pesquisar por nome, ID, responsável ou contato..."
-        value={search}
-        onChange={e => {
-          setSearch(e.target.value);
-          setPagina(1); // reseta pra primeira página ao pesquisar
-        }}
-        className="search-input"
-      />
+      {/* Controles de busca e filtro */}
+      <div className="lista-clientes-controls">
+        <input
+          type="text"
+          placeholder="Buscar cliente, ID, contato ou responsável..."
+          className="search-input"
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+        />
 
-      {clientesPaginaAtual.length === 0 ? (
-        <p>Nenhum cliente encontrado.</p>
-      ) : (
-        <>
-          <table className="clientes-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Cliente</th>
-                <th>Responsável</th>
-                <th>Endereço</th>
-                <th>Bairro</th>
-                <th>Cidade</th>
-                <th>Contato</th>
-                <th>Ações</th>
+        <div className="filters">
+          <select value={order} onChange={(e) => setOrder(e.target.value)}>
+            <option value="id">ID</option>
+            <option value="cliente">Ordem Alfabética</option>
+            <option value="created_at">Data Cadastro</option>
+          </select>
+
+          <select value={dir} onChange={(e) => setDir(e.target.value)}>
+            <option value="asc">Ascendente</option>
+            <option value="desc">Descendente</option>
+          </select>
+        </div>
+      </div>
+
+      <table className="clientes-table">
+        <thead>
+          <tr>
+            <th className="id-col">ID</th>
+            <th>Cliente</th>
+            <th>Responsável</th>
+            <th>Endereço</th>
+            <th>Número</th>
+            <th className="cidade-col">Cidade</th>
+            <th>Contato</th>
+            <th className="data-col">Data Cadastro</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {clientes.length > 0 ? (
+            clientes.map((c) => (
+              <tr key={c.id}>
+                <td>{c.id}</td>
+                <td>{c.cliente}</td>
+                <td>{c.responsavel}</td>
+                <td>{c.endereco}</td>
+                <td>{c.numero}</td>
+                <td>{c.cidade}</td>
+                <td>{c.contato}</td>
+                <td>{new Date(c.created_at).toLocaleDateString('pt-BR')}</td>
+                <td>
+                  <button onClick={() => alert('Editar não implementado')}>Editar</button>
+                  <button onClick={() => alert('Excluir não implementado')}>Excluir</button>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {clientesPaginaAtual.map(cliente => (
-                <tr key={cliente.id}>
-                  <td>{cliente.id}</td>
-                  <td>{cliente.cliente}</td>
-                  <td>{cliente.responsavel}</td>
-                  <td>{cliente.endereco}</td>
-                  <td>{cliente.bairro}</td>
-                  <td>{cliente.cidade}</td>
-                  <td>{cliente.contato}</td>
-                  <td>
-                    <button onClick={() => editarCliente(cliente)}>✏️</button>
-                    <button onClick={() => deletarCliente(cliente)}>🗑️</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-          {/* Paginação */}
-          <div className="paginacao">
-            <button onClick={() => setPagina(p => Math.max(p - 1, 1))} disabled={pagina === 1}>
-              ◀️
-            </button>
-            <span>Página {pagina} de {totalPaginas}</span>
-            <button onClick={() => setPagina(p => Math.min(p + 1, totalPaginas))} disabled={pagina === totalPaginas}>
-              ▶️
-            </button>
-          </div>
-        </>
-      )}
+            ))
+          ) : (
+            <tr>
+              <td colSpan="9">Nenhum cliente encontrado.</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
     </div>
   );
 }

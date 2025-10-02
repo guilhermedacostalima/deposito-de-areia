@@ -1,7 +1,9 @@
 from pathlib import Path
 
+# Caminho base do projeto
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Segurança
 SECRET_KEY = 'django-insecure-h1_d@9sl-1#s2j+n$&*b_55c!ny6%xkky%dz2fqw4pyj7&n%e_'
 DEBUG = True
 ALLOWED_HOSTS = []
@@ -15,15 +17,17 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # nossas apps
+    # Terceiros
     'rest_framework',
     'corsheaders',
+
+    # Nossos apps
     'clientes',
 ]
 
 # Middlewares
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',  # precisa estar no topo
+    'corsheaders.middleware.CorsMiddleware',  # sempre no topo
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -33,12 +37,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# URL principal
 ROOT_URLCONF = 'backend.urls'
 
+# Templates
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [],  # se quiser templates customizados
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -51,9 +57,10 @@ TEMPLATES = [
     },
 ]
 
+# WSGI
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-# Database
+# Banco de dados (SQLite)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -70,19 +77,20 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Internacionalização
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+LANGUAGE_CODE = 'pt-br'
+TIME_ZONE = 'America/Sao_Paulo'
 USE_I18N = True
 USE_TZ = True
 
-# Static files
+# Arquivos estáticos
 STATIC_URL = 'static/'
 
+# Tipo de campo padrão
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Configuração CORS para React
+# Configurações CORS para React
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
-# Se quiser testar rapidamente, pode usar:
+# Se quiser testar rapidamente
 CORS_ALLOW_ALL_ORIGINS = True

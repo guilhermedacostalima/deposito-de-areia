@@ -1,114 +1,158 @@
+/* Container principal */
 .lista-clientes-container {
-  max-width: 900px;
-  margin: 2rem auto;
-  background: #f9fafb;
-  padding: 2rem;
+  padding: 20px;
+  background: #f9f9f9;
   border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  font-family: Arial, sans-serif;
 }
 
+/* Título */
 .lista-clientes-container h2 {
-  text-align: center;
-  color: #2563eb;
-  margin-bottom: 1.5rem;
-  font-size: 2rem;
+  margin-bottom: 16px;
+  color: #333;
 }
 
-.search-input {
-  width: 100%;
-  padding: 0.6rem 1rem;
-  margin-bottom: 1rem;
-  border-radius: 8px;
-  border: 1.5px solid #d1d5db;
-  font-size: 1rem;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
-}
-
-.search-input:focus {
-  outline: none;
-  border-color: #2563eb;
-  box-shadow: 0 0 6px rgba(37, 99, 235, 0.4);
-}
-
-.clientes-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.clientes-table th,
-.clientes-table td {
-  padding: 0.5rem 0.75rem;
-  text-align: left;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.clientes-table th {
-  background-color: #2563eb;
-  color: white;
-  font-weight: 600;
-}
-
-.clientes-table tr:nth-child(even) {
-  background-color: #f3f4f6;
-}
-
-.clientes-table td:last-child {
+/* Controles (search + order + buttons) */
+.lista-clientes-controls {
   display: flex;
-  gap: 0.5rem;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
+/* Input de busca maior */
+.search-input {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  flex: 2;
+  min-width: 300px;
+}
+
+/* Caixa de filtragem no canto direito */
+.filters {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.filters select {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+/* Botões */
+.lista-clientes-controls button,
 .clientes-table button {
-  background: #2563eb;
-  color: white;
+  padding: 4px 8px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  padding: 0.3rem 0.6rem;
-  font-size: 1rem;
-  transition: background-color 0.25s ease;
+  transition: background 0.2s;
+  font-size: 14px;
+}
+
+.lista-clientes-controls button {
+  background-color: #eee;
+}
+
+.lista-clientes-controls button:hover {
+  background-color: #ddd;
+}
+
+.clientes-table button {
+  margin-right: 4px;
+  background-color: #1976d2;
+  color: white;
 }
 
 .clientes-table button:hover {
-  background-color: #1e40af;
+  background-color: #1565c0;
 }
 
-/* Botão deletar vermelho */
-.clientes-table button:nth-child(2) {
-  background-color: #dc2626;
+/* Tabela */
+.clientes-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 12px;
+  table-layout: fixed;
 }
 
-.clientes-table button:nth-child(2):hover {
-  background-color: #991b1b;
+.clientes-table th, .clientes-table td {
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.clientes-table th {
+  background-color: #1976d2;
+  color: white;
+  font-weight: 500;
+}
+
+/* Ajuste de largura das colunas */
+.id-col { width: 50px; }
+.cidade-col { width: 180px; }
+.data-col { width: 120px; }
+
+.clientes-table td {
+  background-color: #fff;
+  color: #333;
+}
+
+/* Coluna de ações centralizada */
+.clientes-table td:last-child {
+  text-align: center;
+  white-space: nowrap;
 }
 
 /* Paginação */
 .paginacao {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 1rem;
-  margin-top: 1.5rem;
+  gap: 8px;
 }
 
 .paginacao button {
-  background-color: #2563eb;
-  color: white;
-  border: none;
+  padding: 4px 10px;
   border-radius: 6px;
-  padding: 0.4rem 0.8rem;
+  border: 1px solid #ccc;
+  background-color: #eee;
   cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.25s ease;
+  transition: background 0.2s;
 }
 
 .paginacao button:disabled {
-  background-color: #94a3b8;
-  cursor: default;
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
-.paginacao span {
-  font-weight: 600;
-  font-size: 1rem;
-  color: #111827;
+.paginacao button:hover:not(:disabled) {
+  background-color: #ddd;
+}
+
+/* Responsividade básica */
+@media (max-width: 900px) {
+  .clientes-table th, .clientes-table td {
+    font-size: 12px;
+    padding: 6px 8px;
+  }
+
+  .lista-clientes-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filters {
+    justify-content: flex-start;
+  }
 }

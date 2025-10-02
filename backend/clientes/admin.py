@@ -3,5 +3,7 @@ from .models import Cliente
 
 @admin.register(Cliente)
 class ClienteAdmin(admin.ModelAdmin):
-    list_display = ("id", "cliente", "responsavel", "cidade", "contato")
-    search_fields = ("cliente", "responsavel", "contato", "bairro", "cidade")
+    list_display = ('id', 'cliente', 'cidade', 'contato', 'created_at')
+    list_filter = ('cidade',)
+    search_fields = ('cliente', 'responsavel', 'contato', 'id')
+    ordering = ('-id',)
