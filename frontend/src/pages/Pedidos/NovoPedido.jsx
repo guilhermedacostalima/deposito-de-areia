@@ -40,6 +40,7 @@ export default function NovoPedido() {
   const [mostrarResumo, setMostrarResumo] = useState(false);
   const [mostrarPreco, setMostrarPreco] = useState(true);
 
+  // Buscar cliente pelo ID
   async function buscarClientePorId(id) {
     if (!id) return;
     try {
@@ -47,7 +48,7 @@ export default function NovoPedido() {
       if (!resposta.ok) throw new Error('Cliente não encontrado');
       const cliente = await resposta.json();
 
-      setPedido((prev) => ({
+      setPedido(prev => ({
         ...prev,
         cliente: cliente.cliente,
         responsavel: cliente.responsavel,
@@ -63,18 +64,20 @@ export default function NovoPedido() {
     }
   }
 
+  // Atualizar campos do pedido
   function handlePedidoChange(e) {
     const { name, value } = e.target;
-    setPedido((prev) => ({ ...prev, [name]: value }));
+    setPedido(prev => ({ ...prev, [name]: value }));
 
     if (name === 'idCliente') {
       buscarClientePorId(value);
     }
   }
 
+  // Atualizar campos do novo produto
   function handleNovoProdutoChange(e) {
     const { name, value } = e.target;
-    setNovoProduto((prev) => ({ ...prev, [name]: value }));
+    setNovoProduto(prev => ({ ...prev, [name]: value }));
   }
 
   function calcularTotal(qtd, valor) {
@@ -93,18 +96,49 @@ export default function NovoPedido() {
       setProdutos(novosProdutos);
       setEditIndex(null);
     } else {
-      setProdutos((prev) => [...prev, novoProduto]);
+      setProdutos(prev => [...prev, novoProduto]);
     }
 
     setNovoProduto({ material: materiaisOpcoes[0], quantidade: '', valorUnitario: '' });
   }
 
   function removerProduto(index) {
-    setProdutos((prev) => prev.filter((_, i) => i !== index));
+    setProdutos(prev => prev.filter((_, i) => i !== index));
     if (editIndex === index) {
       setEditIndex(null);
       setNovoProduto({ material: materiaisOpcoes[0], quantidade: '', valorUnitario: '' });
     }
+  }
+
+  function gerarPedido() {
+    // Salvar no localStorage para ListaPedidos
+    const pedidosSalvos = JSON.parse(localStorage.getItem('pedidos')) || [];
+    const novoId = pedidosSalvos.length > 0 ? pedidosSalvos[pedidosSalvos.length - 1].id + 1 : 1;
+
+    const novoPedido = {
+      id: novoId,
+      cliente: pedido.cliente,
+      responsavel: pedido.responsavel,
+      endereco: {
+        rua: pedido.endereco,
+        numero: pedido.numero,
+        bairro: pedido.bairro,
+        cidade: pedido.cidade,
+        contato: pedido.contato,
+      },
+      materiais: produtos.map(p => ({
+        nome: p.material,
+        qtd: Number(p.quantidade),
+        valorUnit: Number(p.valorUnitario),
+      })),
+      data: new Date().toISOString().split('T')[0],
+      status: 'pendente',
+      tipoPedido: pedido.tipo,
+    };
+
+    const pedidosAtualizados = [...pedidosSalvos, novoPedido];
+    localStorage.setItem('pedidos', JSON.stringify(pedidosAtualizados));
+    setMostrarResumo(true);
   }
 
   const totalGeral = produtos.reduce(
@@ -113,72 +147,24 @@ export default function NovoPedido() {
   );
 
   function toggleMostrarPreco() {
-    setMostrarPreco((prev) => !prev);
+    setMostrarPreco(prev => !prev);
   }
 
   return (
     <div className="novo-pedido-container">
       <h2>Novo Pedido</h2>
 
-      <form className="novo-pedido-form" onSubmit={(e) => e.preventDefault()}>
+      <form className="novo-pedido-form" onSubmit={e => e.preventDefault()}>
         <legend className="form-title">Dados do Cliente</legend>
         <fieldset className="form-bloco cliente-fieldset">
-          <input
-            type="text"
-            name="idCliente"
-            placeholder="ID Cliente"
-            value={pedido.idCliente}
-            onChange={handlePedidoChange}
-          />
-          <input
-            type="text"
-            name="cliente"
-            placeholder="Cliente"
-            value={pedido.cliente}
-            onChange={handlePedidoChange}
-          />
-          <input
-            type="text"
-            name="responsavel"
-            placeholder="Responsável"
-            value={pedido.responsavel}
-            onChange={handlePedidoChange}
-          />
-          <input
-            type="text"
-            name="endereco"
-            placeholder="Endereço"
-            value={pedido.endereco}
-            onChange={handlePedidoChange}
-          />
-          <input
-            type="text"
-            name="numero"
-            placeholder="Número"
-            value={pedido.numero}
-            onChange={handlePedidoChange}
-          />
-          <input
-            type="text"
-            name="bairro"
-            placeholder="Bairro"
-            value={pedido.bairro}
-            onChange={handlePedidoChange}
-          />
-          <input
-            type="text"
-            name="cidade"
-            placeholder="Cidade"
-            value={pedido.cidade}
-            onChange={handlePedidoChange}
-          />
-          <input
-            type="text"
-            name="contato"
-            placeholder="Contato"
-            value={pedido.contato}
-            onChange={handlePedidoChange}
-          />
+          <input type="text" name="idCliente" placeholder="ID Cliente" value={pedido.idCliente} onChange={handlePedidoChange} />
+          <input type="text" name="cliente" placeholder="Cliente" value={pedido.cliente} onChange={handlePedidoChange} />
+          <input type="text" name="responsavel" placeholder="Responsável" value={pedido.responsavel} onChange={handlePedidoChange} />
+          <input type="text" name="endereco" placeholder="Endereço" value={pedido.endereco} onChange={handlePedidoChange} />
+          <input type="text" name="numero" placeholder="Número" value={pedido.numero} onChange={handlePedidoChange} />
+          <input type="text" name="bairro" placeholder="Bairro" value={pedido.bairro} onChange={handlePedidoChange} />
+          <input type="text" name="cidade" placeholder="Cidade" value={pedido.cidade} onChange={handlePedidoChange} />
+          <input type="text" name="contato" placeholder="Contato" value={pedido.contato} onChange={handlePedidoChange} />
         </fieldset>
 
         <div className="grupo-tipo-pedido centralizado">
@@ -193,47 +179,16 @@ export default function NovoPedido() {
 
         <div className="produto-linha novo-produto">
           <select name="material" value={novoProduto.material} onChange={handleNovoProdutoChange}>
-            {materiaisOpcoes.map((mat) => (
+            {materiaisOpcoes.map(mat => (
               <option key={mat} value={mat}>{mat}</option>
             ))}
           </select>
-
-          <input
-            type="number"
-            name="quantidade"
-            placeholder="Qtd"
-            value={novoProduto.quantidade}
-            onChange={handleNovoProdutoChange}
-            min="0"
-          />
-          <input
-            type="number"
-            name="valorUnitario"
-            placeholder="Valor Unit."
-            value={novoProduto.valorUnitario}
-            onChange={handleNovoProdutoChange}
-            min="0"
-            step="0.01"
-          />
-          <input
-            type="number"
-            name="total"
-            placeholder="Total"
-            value={calcularTotal(novoProduto.quantidade, novoProduto.valorUnitario).toFixed(2)}
-            readOnly
-          />
-
+          <input type="number" name="quantidade" placeholder="Qtd" value={novoProduto.quantidade} onChange={handleNovoProdutoChange} min="0" />
+          <input type="number" name="valorUnitario" placeholder="Valor Unit." value={novoProduto.valorUnitario} onChange={handleNovoProdutoChange} min="0" step="0.01" />
+          <input type="number" name="total" placeholder="Total" value={calcularTotal(novoProduto.quantidade, novoProduto.valorUnitario).toFixed(2)} readOnly />
           <button type="button" onClick={adicionarProduto} className="btn-adicionar">
             {editIndex !== null ? 'Atualizar' : 'Adicionar'}
           </button>
-        </div>
-
-        <div className="produtos-cabecalho">
-          <div className="col material">Material</div>
-          <div className="col quantidade">Quantidade</div>
-          <div className="col valor-unitario">Valor Unit.</div>
-          <div className="col total">Total</div>
-          <div className="col acoes">Ações</div>
         </div>
 
         {produtos.map((produto, index) => {
@@ -243,7 +198,7 @@ export default function NovoPedido() {
               <div className="col material">
                 {isEditing ? (
                   <select name="material" value={novoProduto.material} onChange={handleNovoProdutoChange}>
-                    {materiaisOpcoes.map((mat) => (
+                    {materiaisOpcoes.map(mat => (
                       <option key={mat} value={mat}>{mat}</option>
                     ))}
                   </select>
@@ -251,7 +206,6 @@ export default function NovoPedido() {
                   produto.material
                 )}
               </div>
-
               <div className="col quantidade">
                 {isEditing ? (
                   <input type="number" name="quantidade" value={novoProduto.quantidade} onChange={handleNovoProdutoChange} min="0" />
@@ -259,23 +213,16 @@ export default function NovoPedido() {
                   produto.quantidade
                 )}
               </div>
-
               <div className="col valor-unitario">
                 {isEditing ? (
                   <input type="number" name="valorUnitario" value={novoProduto.valorUnitario} onChange={handleNovoProdutoChange} min="0" step="0.01" />
                 ) : (
-                  <span className="preco">
-                    <span className="simbolo">R$</span> {Number(produto.valorUnitario).toFixed(2)}
-                  </span>
+                  <span className="preco">R${Number(produto.valorUnitario).toFixed(2)}</span>
                 )}
               </div>
-
               <div className="col total">
-                <span className="preco">
-                  <span className="simbolo">R$</span> {calcularTotal(produto.quantidade, produto.valorUnitario).toFixed(2)}
-                </span>
+                <span className="preco">R${calcularTotal(produto.quantidade, produto.valorUnitario).toFixed(2)}</span>
               </div>
-
               <div className="col acoes">
                 {isEditing ? (
                   <>
@@ -296,8 +243,8 @@ export default function NovoPedido() {
         <div className="total-geral">Total R${totalGeral.toFixed(2)}</div>
 
         <div className="botao-container">
-          <button type="button" className="btn-fazer-pedido" onClick={() => setMostrarResumo(true)}>
-            Gerar
+          <button type="button" className="btn-fazer-pedido" onClick={gerarPedido}>
+            Gerar Pedido
           </button>
         </div>
       </form>
@@ -309,17 +256,12 @@ export default function NovoPedido() {
           </div>
 
           <div className="botoes-container">
-            <button className="btn-toggle" onClick={toggleMostrarPreco}>
+            <button className="btn-toggle" onClick={() => setMostrarPreco(!mostrarPreco)}>
               {mostrarPreco ? 'Esconder Preço' : 'Mostrar Preço'}
             </button>
-
-            <button
-              className="btn-fazer-pedido"
-              onClick={() => alert('Pedido enviado! (implemente a lógica aqui)')}
-            >
+            <button className="btn-fazer-pedido" onClick={() => alert('Pedido enviado!')}>
               Fazer Pedido
             </button>
-
             <button className="btn-fazer-pedido" onClick={() => window.print()}>
               Imprimir
             </button>

@@ -10,15 +10,21 @@ class ClienteListCreate(generics.ListCreateAPIView):
     def get_queryset(self):
         qs = super().get_queryset()
         q = self.request.GET.get("q", "").strip()
+        order = self.request.GET.get("order", "id")
+        dir = self.request.GET.get("dir", "asc")
+
         if q:
-            return qs.filter(
+            qs = qs.filter(
                 Q(cliente__icontains=q) |
                 Q(contato__icontains=q) |
                 Q(id__exact=q) |
                 Q(responsavel__icontains=q)
-            ).order_by("cliente")
-        return qs
+            )
 
-class ClienteRetrieve(generics.RetrieveAPIView):
+        if dir.lower() == "desc":
+            order = "-" + order
+        return qs.order_by(order)
+
+class ClienteRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = Cliente.objects.all()
     serializer_class = ClienteSerializer

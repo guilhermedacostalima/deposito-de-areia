@@ -1,14 +1,12 @@
 from pathlib import Path
 
-# Caminho base do projeto
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Segurança
-SECRET_KEY = 'django-insecure-h1_d@9sl-1#s2j+n$&*b_55c!ny6%xkky%dz2fqw4pyj7&n%e_'
+SECRET_KEY = 'django-insecure-xxxx'
+
 DEBUG = True
 ALLOWED_HOSTS = []
 
-# Aplicativos instalados
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -16,18 +14,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    # Terceiros
     'rest_framework',
     'corsheaders',
-
-    # Nossos apps
     'clientes',
+    'pedidos'
 ]
 
-# Middlewares
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',  # sempre no topo
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -37,14 +31,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# URL principal
 ROOT_URLCONF = 'backend.urls'
 
-# Templates
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],  # se quiser templates customizados
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -57,10 +49,8 @@ TEMPLATES = [
     },
 ]
 
-# WSGI
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-# Banco de dados (SQLite)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -68,29 +58,13 @@ DATABASES = {
     }
 }
 
-# Validação de senhas
-AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
-]
-
-# Internacionalização
 LANGUAGE_CODE = 'pt-br'
 TIME_ZONE = 'America/Sao_Paulo'
 USE_I18N = True
 USE_TZ = True
 
-# Arquivos estáticos
 STATIC_URL = 'static/'
 
-# Tipo de campo padrão
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Configurações CORS para React
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-]
-# Se quiser testar rapidamente
 CORS_ALLOW_ALL_ORIGINS = True

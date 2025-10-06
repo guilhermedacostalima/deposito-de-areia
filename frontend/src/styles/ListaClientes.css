@@ -23,7 +23,6 @@
   margin-bottom: 12px;
 }
 
-/* Input de busca maior */
 .search-input {
   padding: 8px 12px;
   border-radius: 6px;
@@ -32,7 +31,6 @@
   min-width: 300px;
 }
 
-/* Caixa de filtragem no canto direito */
 .filters {
   display: flex;
   gap: 8px;
@@ -47,34 +45,34 @@
   cursor: pointer;
 }
 
-/* Botões */
-.lista-clientes-controls button,
-.clientes-table button {
-  padding: 4px 8px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.2s;
-  font-size: 14px;
-}
-
-.lista-clientes-controls button {
-  background-color: #eee;
-}
-
-.lista-clientes-controls button:hover {
-  background-color: #ddd;
-}
-
+/* Botões na tabela */
 .clientes-table button {
   margin-right: 4px;
-  background-color: #1976d2;
-  color: white;
+  min-width: 60px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 6px;
+  font-size: 13px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  box-sizing: border-box;
 }
 
-.clientes-table button:hover {
-  background-color: #1565c0;
+.btn-edit {
+  background-color: #fff;
+  color: #1976d2;
+  border: 1px solid #1976d2;
 }
+.btn-edit:hover { background-color: rgba(25,118,210,0.08); }
+
+.btn-delete {
+  background-color: #fff;
+  color: #e74c3c;
+  border: 1px solid #e74c3c;
+}
+.btn-delete:hover { background-color: rgba(231,76,60,0.06); }
 
 /* Tabela */
 .clientes-table {
@@ -85,12 +83,15 @@
 }
 
 .clientes-table th, .clientes-table td {
-  padding: 8px 10px;
-  border: 1px solid #ddd;
+  padding: 6px 8px;       /* diminui padding para alinhar */
+  border: 1px solid #ccc;
   text-align: left;
+  vertical-align: middle;  /* centraliza verticalmente */
+  height: 36px;            /* altura fixa para todas as linhas */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  box-sizing: border-box;
 }
 
 .clientes-table th {
@@ -99,20 +100,29 @@
   font-weight: 500;
 }
 
-/* Ajuste de largura das colunas */
 .id-col { width: 50px; }
 .cidade-col { width: 180px; }
 .data-col { width: 120px; }
 
-.clientes-table td {
-  background-color: #fff;
-  color: #333;
+/* Coluna de ações */
+.clientes-table td.acoes-col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  width: 150px;
+  min-width: 120px;
 }
 
-/* Coluna de ações centralizada */
-.clientes-table td:last-child {
-  text-align: center;
-  white-space: nowrap;
+/* Inputs de edição */
+.clientes-table input {
+  width: 100%;
+  height: 28px;            /* mesma altura dos botões */
+  padding: 2px 6px;
+  border: 1px solid #1976d2;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 14px;
 }
 
 /* Paginação */
@@ -122,37 +132,19 @@
   gap: 8px;
 }
 
-.paginacao button {
-  padding: 4px 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  background-color: #eee;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.paginacao button:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-
-.paginacao button:hover:not(:disabled) {
-  background-color: #ddd;
-}
-
-/* Responsividade básica */
+/* Responsividade */
 @media (max-width: 900px) {
   .clientes-table th, .clientes-table td {
     font-size: 12px;
-    padding: 6px 8px;
+    padding: 4px 6px;
   }
 
-  .lista-clientes-controls {
-    flex-direction: column;
-    align-items: stretch;
+  .clientes-table td.acoes-col {
+    width: 120px;
+    min-width: 100px;
   }
 
-  .filters {
-    justify-content: flex-start;
+  .clientes-table {
+    table-layout: auto;
   }
 }
