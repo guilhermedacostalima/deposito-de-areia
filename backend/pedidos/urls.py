@@ -1,7 +1,10 @@
-from django.urls import path
-from .views import PedidoListCreate, PedidoRetrieveUpdateDestroy
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import PedidoViewSet
+
+router = DefaultRouter()
+router.register(r'', PedidoViewSet, basename='pedidos')  # rota raiz do include
 
 urlpatterns = [
-    path('pedidos/', PedidoListCreate.as_view(), name='lista_pedidos'),
-    path('pedidos/<int:pk>/', PedidoRetrieveUpdateDestroy.as_view(), name='pedido_detail'),
+    path('', include(router.urls)),
 ]

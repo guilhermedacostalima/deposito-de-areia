@@ -3,6 +3,8 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('clientes.urls')),
-    path('api/', include('pedidos.urls')),
+
+    # Rotas da API
+    path('api/clientes/', include('clientes.urls')),
+    path('api/pedidos/', include('pedidos.urls')),
 ]
