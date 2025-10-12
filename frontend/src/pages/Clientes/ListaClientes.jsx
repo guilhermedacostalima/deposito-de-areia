@@ -19,12 +19,14 @@ export default function ListaClientes() {
       setClientes(res.data);
     } catch (err) {
       console.error('Erro ao buscar clientes:', err);
-      alert('Erro ao buscar clientes. Veja o console para detalhes.');
+      alert('Erro ao buscar clientes. Veja console.');
     }
   };
 
   useEffect(() => {
     fetchClientes();
+    window.addEventListener('clientesUpdated', fetchClientes);
+    return () => window.removeEventListener('clientesUpdated', fetchClientes);
   }, [q, order, dir, limit]);
 
   const startEditing = (cliente) => {
@@ -44,7 +46,7 @@ export default function ListaClientes() {
       cancelEditing();
     } catch (err) {
       console.error('Erro ao salvar cliente:', err);
-      alert('Erro ao salvar cliente. Veja o console para detalhes.');
+      alert('Erro ao salvar cliente. Veja console.');
     }
   };
 
@@ -55,7 +57,7 @@ export default function ListaClientes() {
       fetchClientes();
     } catch (err) {
       console.error('Erro ao deletar cliente:', err);
-      alert('Erro ao deletar cliente. Veja o console para detalhes.');
+      alert('Erro ao deletar cliente. Veja console.');
     }
   };
 
@@ -66,110 +68,40 @@ export default function ListaClientes() {
   return (
     <div className="lista-clientes-container">
       <h2>Lista de Clientes</h2>
-
-      <div className="lista-clientes-controls">
-        <input
-          type="text"
-          placeholder="Buscar cliente, ID, contato ou responsável..."
-          className="search-input"
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-        />
-        <div className="filters">
-          <select value={order} onChange={(e) => setOrder(e.target.value)}>
-            <option value="id">ID</option>
-            <option value="cliente">Cliente</option>
-            <option value="created_at">Data Cadastro</option>
-          </select>
-          <select value={dir} onChange={(e) => setDir(e.target.value)}>
-            <option value="asc">Ascendente</option>
-            <option value="desc">Descendente</option>
-          </select>
-        </div>
-      </div>
-
-      <table className="clientes-table">
+      <input type="text" placeholder="Buscar..." value={q} onChange={(e) => setQ(e.target.value)} />
+      <table>
         <thead>
           <tr>
-            <th className="id-col">ID</th>
-            <th>Cliente</th>
-            <th>Responsável</th>
-            <th>Endereço</th>
-            <th>Número</th>
-            <th className="cidade-col">Cidade</th>
-            <th>Contato</th>
-            <th className="data-col">Data Cadastro</th>
-            <th>Ações</th>
+            <th>ID</th><th>Cliente</th><th>Responsável</th><th>Endereço</th><th>Número</th>
+            <th>Bairro</th><th>Cidade</th><th>Contato</th><th>Data</th><th>Ações</th>
           </tr>
         </thead>
         <tbody>
-          {clientes.length > 0 ? (
-            clientes.map((c) => (
-              <tr key={c.id}>
-                <td>{c.id}</td>
-                <td>
-                  {editingId === c.id ? (
-                    <input value={formData.cliente} onChange={(e) => handleChange(e, 'cliente')} />
-                  ) : (
-                    c.cliente
-                  )}
-                </td>
-                <td>
-                  {editingId === c.id ? (
-                    <input value={formData.responsavel} onChange={(e) => handleChange(e, 'responsavel')} />
-                  ) : (
-                    c.responsavel
-                  )}
-                </td>
-                <td>
-                  {editingId === c.id ? (
-                    <input value={formData.endereco} onChange={(e) => handleChange(e, 'endereco')} />
-                  ) : (
-                    c.endereco
-                  )}
-                </td>
-                <td>
-                  {editingId === c.id ? (
-                    <input value={formData.numero} onChange={(e) => handleChange(e, 'numero')} />
-                  ) : (
-                    c.numero
-                  )}
-                </td>
-                <td>
-                  {editingId === c.id ? (
-                    <input value={formData.cidade} onChange={(e) => handleChange(e, 'cidade')} />
-                  ) : (
-                    c.cidade
-                  )}
-                </td>
-                <td>
-                  {editingId === c.id ? (
-                    <input value={formData.contato} onChange={(e) => handleChange(e, 'contato')} />
-                  ) : (
-                    c.contato
-                  )}
-                </td>
-                <td>{new Date(c.created_at).toLocaleDateString('pt-BR')}</td>
-                <td className="acoes-col">
-                  {editingId === c.id ? (
-                    <>
-                      <button className="btn-edit" onClick={() => saveEditing(c.id)}>Salvar</button>
-                      <button className="btn-delete" onClick={cancelEditing}>Cancelar</button>
-                    </>
-                  ) : (
-                    <>
-                      <button className="btn-edit" onClick={() => startEditing(c)}>Editar</button>
-                      <button className="btn-delete" onClick={() => deleteCliente(c.id)}>Excluir</button>
-                    </>
-                  )}
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="9">Nenhum cliente encontrado.</td>
+          {clientes.length > 0 ? clientes.map(c => (
+            <tr key={c.id}>
+              <td>{c.id}</td>
+              <td>{editingId === c.id ? <input value={formData.cliente} onChange={e => handleChange(e,'cliente')}/> : c.cliente}</td>
+              <td>{editingId === c.id ? <input value={formData.responsavel} onChange={e => handleChange(e,'responsavel')}/> : c.responsavel}</td>
+              <td>{editingId === c.id ? <input value={formData.endereco} onChange={e => handleChange(e,'endereco')}/> : c.endereco || ''}</td>
+              <td>{editingId === c.id ? <input value={formData.numero} onChange={e => handleChange(e,'numero')}/> : c.numero || ''}</td>
+              <td>{editingId === c.id ? <input value={formData.bairro} onChange={e => handleChange(e,'bairro')}/> : c.bairro || ''}</td>
+              <td>{editingId === c.id ? <input value={formData.cidade} onChange={e => handleChange(e,'cidade')}/> : c.cidade}</td>
+              <td>{editingId === c.id ? <input value={formData.contato} onChange={e => handleChange(e,'contato')}/> : c.contato || ''}</td>
+              <td>{new Date(c.created_at).toLocaleDateString('pt-BR')}</td>
+              <td>
+                {editingId === c.id ? 
+                  <>
+                    <button onClick={() => saveEditing(c.id)}>Salvar</button>
+                    <button onClick={cancelEditing}>Cancelar</button>
+                  </> :
+                  <>
+                    <button onClick={() => startEditing(c)}>Editar</button>
+                    <button onClick={() => deleteCliente(c.id)}>Excluir</button>
+                  </>
+                }
+              </td>
             </tr>
-          )}
+          )) : <tr><td colSpan="10">Nenhum cliente encontrado.</td></tr>}
         </tbody>
       </table>
     </div>

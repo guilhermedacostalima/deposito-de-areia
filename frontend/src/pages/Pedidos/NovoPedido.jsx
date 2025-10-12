@@ -3,17 +3,8 @@ import '../../styles/NovoPedido.css';
 import LayoutPedido from './LayoutPedido';
 
 const materiaisOpcoes = [
-  'Areia Grossa',
-  'Areia Média',
-  'Areia Fina Branca',
-  'Areia Fina Rosa',
-  'Areia Cava',
-  'Pedra',
-  'Pedrisco',
-  'Bica Corrida',
-  'Pó de pedra',
-  'Frete',
-  'Outro',
+  'Areia Grossa','Areia Média','Areia Fina Branca','Areia Fina Rosa',
+  'Areia Cava','Pedra','Pedrisco','Bica Corrida','Pó de pedra','Frete','Outro',
 ];
 
 export default function NovoPedido() {
@@ -40,23 +31,21 @@ export default function NovoPedido() {
   const [mostrarResumo, setMostrarResumo] = useState(false);
   const [mostrarPreco, setMostrarPreco] = useState(true);
 
-  // Buscar cliente pelo ID
   async function buscarClientePorId(id) {
     if (!id) return;
     try {
-      const resposta = await fetch(`http://localhost:8000/api/clientes/${id}`);
+      const resposta = await fetch(`http://127.0.0.1:8000/api/clientes/${id}/`);
       if (!resposta.ok) throw new Error('Cliente não encontrado');
       const cliente = await resposta.json();
-
       setPedido(prev => ({
         ...prev,
         cliente: cliente.cliente,
         responsavel: cliente.responsavel,
-        endereco: cliente.endereco,
-        numero: cliente.numero,
-        bairro: cliente.bairro,
+        endereco: cliente.endereco || '',
+        numero: cliente.numero || '',
+        bairro: cliente.bairro || '',
         cidade: cliente.cidade,
-        contato: cliente.contato,
+        contato: cliente.contato || '',
       }));
     } catch (err) {
       console.error(err);
@@ -64,17 +53,12 @@ export default function NovoPedido() {
     }
   }
 
-  // Atualizar campos do pedido
   function handlePedidoChange(e) {
     const { name, value } = e.target;
     setPedido(prev => ({ ...prev, [name]: value }));
-
-    if (name === 'idCliente') {
-      buscarClientePorId(value);
-    }
+    if (name === 'idCliente') buscarClientePorId(value);
   }
 
-  // Atualizar campos do novo produto
   function handleNovoProdutoChange(e) {
     const { name, value } = e.target;
     setNovoProduto(prev => ({ ...prev, [name]: value }));
@@ -89,7 +73,6 @@ export default function NovoPedido() {
 
   function adicionarProduto() {
     if (!novoProduto.quantidade || !novoProduto.valorUnitario) return;
-
     if (editIndex !== null) {
       const novosProdutos = [...produtos];
       novosProdutos[editIndex] = { ...novoProduto };
@@ -98,20 +81,15 @@ export default function NovoPedido() {
     } else {
       setProdutos(prev => [...prev, novoProduto]);
     }
-
     setNovoProduto({ material: materiaisOpcoes[0], quantidade: '', valorUnitario: '' });
   }
 
   function removerProduto(index) {
     setProdutos(prev => prev.filter((_, i) => i !== index));
-    if (editIndex === index) {
-      setEditIndex(null);
-      setNovoProduto({ material: materiaisOpcoes[0], quantidade: '', valorUnitario: '' });
-    }
+    if (editIndex === index) setEditIndex(null);
   }
 
   function gerarPedido() {
-    // Salvar no localStorage para ListaPedidos
     const pedidosSalvos = JSON.parse(localStorage.getItem('pedidos')) || [];
     const novoId = pedidosSalvos.length > 0 ? pedidosSalvos[pedidosSalvos.length - 1].id + 1 : 1;
 
@@ -126,148 +104,60 @@ export default function NovoPedido() {
         cidade: pedido.cidade,
         contato: pedido.contato,
       },
-      materiais: produtos.map(p => ({
-        nome: p.material,
-        qtd: Number(p.quantidade),
-        valorUnit: Number(p.valorUnitario),
-      })),
+      materiais: produtos.map(p => ({ nome: p.material, qtd: Number(p.quantidade), valorUnit: Number(p.valorUnitario) })),
       data: new Date().toISOString().split('T')[0],
       status: 'pendente',
       tipoPedido: pedido.tipo,
     };
 
-    const pedidosAtualizados = [...pedidosSalvos, novoPedido];
-    localStorage.setItem('pedidos', JSON.stringify(pedidosAtualizados));
+    localStorage.setItem('pedidos', JSON.stringify([...pedidosSalvos, novoPedido]));
     setMostrarResumo(true);
   }
 
-  const totalGeral = produtos.reduce(
-    (acc, p) => acc + calcularTotal(p.quantidade, p.valorUnitario),
-    0
-  );
-
-  function toggleMostrarPreco() {
-    setMostrarPreco(prev => !prev);
-  }
+  const totalGeral = produtos.reduce((acc, p) => acc + calcularTotal(p.quantidade, p.valorUnitario), 0);
 
   return (
     <div className="novo-pedido-container">
       <h2>Novo Pedido</h2>
-
-      <form className="novo-pedido-form" onSubmit={e => e.preventDefault()}>
-        <legend className="form-title">Dados do Cliente</legend>
-        <fieldset className="form-bloco cliente-fieldset">
-          <input type="text" name="idCliente" placeholder="ID Cliente" value={pedido.idCliente} onChange={handlePedidoChange} />
-          <input type="text" name="cliente" placeholder="Cliente" value={pedido.cliente} onChange={handlePedidoChange} />
-          <input type="text" name="responsavel" placeholder="Responsável" value={pedido.responsavel} onChange={handlePedidoChange} />
-          <input type="text" name="endereco" placeholder="Endereço" value={pedido.endereco} onChange={handlePedidoChange} />
-          <input type="text" name="numero" placeholder="Número" value={pedido.numero} onChange={handlePedidoChange} />
-          <input type="text" name="bairro" placeholder="Bairro" value={pedido.bairro} onChange={handlePedidoChange} />
-          <input type="text" name="cidade" placeholder="Cidade" value={pedido.cidade} onChange={handlePedidoChange} />
-          <input type="text" name="contato" placeholder="Contato" value={pedido.contato} onChange={handlePedidoChange} />
-        </fieldset>
-
-        <div className="grupo-tipo-pedido centralizado">
-          <label htmlFor="tipo">Tipo de Pedido:</label>
-          <select id="tipo" name="tipo" value={pedido.tipo} onChange={handlePedidoChange}>
+      <form onSubmit={e => e.preventDefault()}>
+        <fieldset>
+          <input type="text" name="idCliente" placeholder="ID Cliente" value={pedido.idCliente} onChange={handlePedidoChange}/>
+          <input type="text" name="cliente" placeholder="Cliente" value={pedido.cliente} onChange={handlePedidoChange}/>
+          <input type="text" name="responsavel" placeholder="Responsável" value={pedido.responsavel} onChange={handlePedidoChange}/>
+          <input type="text" name="endereco" placeholder="Endereço" value={pedido.endereco} onChange={handlePedidoChange}/>
+          <input type="text" name="numero" placeholder="Número" value={pedido.numero} onChange={handlePedidoChange}/>
+          <input type="text" name="bairro" placeholder="Bairro" value={pedido.bairro} onChange={handlePedidoChange}/>
+          <input type="text" name="cidade" placeholder="Cidade" value={pedido.cidade} onChange={handlePedidoChange}/>
+          <input type="text" name="contato" placeholder="Contato" value={pedido.contato} onChange={handlePedidoChange}/>
+          <select name="tipo" value={pedido.tipo} onChange={handlePedidoChange}>
             <option value="Entrega">Entrega</option>
             <option value="Retirada">Retirada</option>
           </select>
-        </div>
+        </fieldset>
 
-        <legend className="form-title">Produtos do Pedido</legend>
-
-        <div className="produto-linha novo-produto">
+        <fieldset>
           <select name="material" value={novoProduto.material} onChange={handleNovoProdutoChange}>
-            {materiaisOpcoes.map(mat => (
-              <option key={mat} value={mat}>{mat}</option>
-            ))}
+            {materiaisOpcoes.map(m => <option key={m} value={m}>{m}</option>)}
           </select>
-          <input type="number" name="quantidade" placeholder="Qtd" value={novoProduto.quantidade} onChange={handleNovoProdutoChange} min="0" />
-          <input type="number" name="valorUnitario" placeholder="Valor Unit." value={novoProduto.valorUnitario} onChange={handleNovoProdutoChange} min="0" step="0.01" />
-          <input type="number" name="total" placeholder="Total" value={calcularTotal(novoProduto.quantidade, novoProduto.valorUnitario).toFixed(2)} readOnly />
-          <button type="button" onClick={adicionarProduto} className="btn-adicionar">
-            {editIndex !== null ? 'Atualizar' : 'Adicionar'}
-          </button>
-        </div>
+          <input type="number" name="quantidade" placeholder="Qtd" value={novoProduto.quantidade} onChange={handleNovoProdutoChange}/>
+          <input type="number" name="valorUnitario" placeholder="Valor Unit." value={novoProduto.valorUnitario} onChange={handleNovoProdutoChange}/>
+          <input type="number" placeholder="Total" value={calcularTotal(novoProduto.quantidade, novoProduto.valorUnitario)} readOnly/>
+          <button type="button" onClick={adicionarProduto}>{editIndex !== null ? 'Atualizar' : 'Adicionar'}</button>
+        </fieldset>
 
-        {produtos.map((produto, index) => {
-          const isEditing = editIndex === index;
-          return (
-            <div key={index} className="produto-linha">
-              <div className="col material">
-                {isEditing ? (
-                  <select name="material" value={novoProduto.material} onChange={handleNovoProdutoChange}>
-                    {materiaisOpcoes.map(mat => (
-                      <option key={mat} value={mat}>{mat}</option>
-                    ))}
-                  </select>
-                ) : (
-                  produto.material
-                )}
-              </div>
-              <div className="col quantidade">
-                {isEditing ? (
-                  <input type="number" name="quantidade" value={novoProduto.quantidade} onChange={handleNovoProdutoChange} min="0" />
-                ) : (
-                  produto.quantidade
-                )}
-              </div>
-              <div className="col valor-unitario">
-                {isEditing ? (
-                  <input type="number" name="valorUnitario" value={novoProduto.valorUnitario} onChange={handleNovoProdutoChange} min="0" step="0.01" />
-                ) : (
-                  <span className="preco">R${Number(produto.valorUnitario).toFixed(2)}</span>
-                )}
-              </div>
-              <div className="col total">
-                <span className="preco">R${calcularTotal(produto.quantidade, produto.valorUnitario).toFixed(2)}</span>
-              </div>
-              <div className="col acoes">
-                {isEditing ? (
-                  <>
-                    <button type="button" className="btn-adicionar" onClick={adicionarProduto}>Salvar</button>
-                    <button type="button" className="btn-remover" onClick={() => { setEditIndex(null); setNovoProduto({ material: materiaisOpcoes[0], quantidade: '', valorUnitario: '' }); }}>Cancelar</button>
-                  </>
-                ) : (
-                  <>
-                    <button type="button" className="btn-editar" onClick={() => { setEditIndex(index); setNovoProduto(produto); }}>Editar</button>
-                    <button type="button" className="btn-remover" onClick={() => removerProduto(index)}>Remover</button>
-                  </>
-                )}
-              </div>
-            </div>
-          );
-        })}
+        {produtos.map((p,i) => (
+          <div key={i}>
+            <span>{p.material}</span> | <span>{p.quantidade}</span> | <span>R${p.valorUnitario}</span> | <span>R${calcularTotal(p.quantidade,p.valorUnitario)}</span>
+            <button type="button" onClick={()=>{setEditIndex(i); setNovoProduto(p)}}>Editar</button>
+            <button type="button" onClick={()=>removerProduto(i)}>Remover</button>
+          </div>
+        ))}
 
-        <div className="total-geral">Total R${totalGeral.toFixed(2)}</div>
-
-        <div className="botao-container">
-          <button type="button" className="btn-fazer-pedido" onClick={gerarPedido}>
-            Gerar Pedido
-          </button>
-        </div>
+        <div>Total Geral: R${totalGeral}</div>
+        <button type="button" onClick={gerarPedido}>Gerar Pedido</button>
       </form>
 
-      {mostrarResumo && (
-        <>
-          <div id="print-layout-container">
-            <LayoutPedido pedido={pedido} produtos={produtos} mostrarPreco={mostrarPreco} />
-          </div>
-
-          <div className="botoes-container">
-            <button className="btn-toggle" onClick={() => setMostrarPreco(!mostrarPreco)}>
-              {mostrarPreco ? 'Esconder Preço' : 'Mostrar Preço'}
-            </button>
-            <button className="btn-fazer-pedido" onClick={() => alert('Pedido enviado!')}>
-              Fazer Pedido
-            </button>
-            <button className="btn-fazer-pedido" onClick={() => window.print()}>
-              Imprimir
-            </button>
-          </div>
-        </>
-      )}
+      {mostrarResumo && <LayoutPedido pedido={pedido} produtos={produtos} mostrarPreco={mostrarPreco}/>}
     </div>
   );
 }
