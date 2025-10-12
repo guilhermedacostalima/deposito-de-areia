@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import axios from 'axios';
 import '../../styles/NovoPedido.css';
 import LayoutPedido from './LayoutPedido';
 
@@ -9,8 +10,15 @@ const materiaisOpcoes = [
 
 export default function NovoPedido() {
   const [pedido, setPedido] = useState({
-    idCliente: '', cliente: '', responsavel: '', endereco: '',
-    numero: '', bairro: '', cidade: '', contato: '', tipo: 'Entrega',
+    idCliente: '',
+    cliente: '',
+    responsavel: '',
+    endereco: '',
+    numero: '',
+    bairro: '',
+    cidade: '',
+    contato: '',
+    tipo: 'Entrega',
   });
 
   const [novoProduto, setNovoProduto] = useState({
@@ -24,26 +32,28 @@ export default function NovoPedido() {
   const [mostrarResumo, setMostrarResumo] = useState(false);
   const [mostrarPreco, setMostrarPreco] = useState(true);
 
-  async function buscarClientePorId(id) {
-    if (!id) return;
-    try {
-      const resposta = await fetch(`http://localhost:8000/api/clientes/${id}`);
-      if (!resposta.ok) throw new Error('Cliente não encontrado');
-      const cliente = await resposta.json();
+  const [lastFetchedId, setLastFetchedId] = useState(null);
+  const debounceRef = useRef(null);
 
+  async function buscarClientePorId(id) {
+    if (!id || String(lastFetchedId) === String(id)) return;
+    try {
+      const resp = await axios.get(`http://127.0.0.1:8000/api/clientes/${id}/`, { timeout: 5000 });
+      const cliente = resp.data;
       setPedido(prev => ({
         ...prev,
-        cliente: cliente.cliente,
-        responsavel: cliente.responsavel,
-        endereco: cliente.endereco,
-        numero: cliente.numero,
-        bairro: cliente.bairro,
-        cidade: cliente.cidade,
-        contato: cliente.contato,
+        cliente: cliente.cliente || '',
+        responsavel: cliente.responsavel || '',
+        endereco: cliente.endereco || '',
+        numero: cliente.numero || '',
+        bairro: cliente.bairro || '',
+        cidade: cliente.cidade || '',
+        contato: cliente.contato || '',
       }));
+      setLastFetchedId(id);
     } catch (err) {
       console.error(err);
-      alert('Cliente não encontrado');
+      alert('Erro ao buscar cliente. Verifique o console.');
     }
   }
 
@@ -51,7 +61,11 @@ export default function NovoPedido() {
     const { name, value } = e.target;
     setPedido(prev => ({ ...prev, [name]: value }));
 
-    if (name === 'idCliente') buscarClientePorId(value);
+    if (name === 'idCliente') {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+      if (!value.trim()) { setLastFetchedId(null); return; }
+      debounceRef.current = setTimeout(() => buscarClientePorId(value.trim()), 400);
+    }
   }
 
   function handleNovoProdutoChange(e) {
@@ -68,7 +82,6 @@ export default function NovoPedido() {
 
   function adicionarProduto() {
     if (!novoProduto.quantidade || !novoProduto.valorUnitario) return;
-
     if (editIndex !== null) {
       const novosProdutos = [...produtos];
       novosProdutos[editIndex] = { ...novoProduto };
@@ -77,7 +90,6 @@ export default function NovoPedido() {
     } else {
       setProdutos(prev => [...prev, novoProduto]);
     }
-
     setNovoProduto({ material: materiaisOpcoes[0], quantidade: '', valorUnitario: '' });
   }
 
@@ -92,7 +104,6 @@ export default function NovoPedido() {
   function gerarPedido() {
     const pedidosSalvos = JSON.parse(localStorage.getItem('pedidos')) || [];
     const novoId = pedidosSalvos.length > 0 ? pedidosSalvos[pedidosSalvos.length - 1].id + 1 : 1;
-
     const novoPedido = {
       id: novoId,
       cliente: pedido.cliente,
@@ -113,13 +124,13 @@ export default function NovoPedido() {
       status: 'pendente',
       tipoPedido: pedido.tipo,
     };
-
     localStorage.setItem('pedidos', JSON.stringify([...pedidosSalvos, novoPedido]));
     setMostrarResumo(true);
   }
 
   const totalGeral = produtos.reduce(
-    (acc, p) => acc + calcularTotal(p.quantidade, p.valorUnitario), 0
+    (acc, p) => acc + calcularTotal(p.quantidade, p.valorUnitario),
+    0
   );
 
   return (
@@ -127,6 +138,7 @@ export default function NovoPedido() {
       <h2>Novo Pedido</h2>
 
       <form className="novo-pedido-form" onSubmit={e => e.preventDefault()}>
+        <legend className="form-title">Dados do Cliente</legend>
         <fieldset className="form-bloco cliente-fieldset">
           <input type="text" name="idCliente" placeholder="ID Cliente" value={pedido.idCliente} onChange={handlePedidoChange} />
           <input type="text" name="cliente" placeholder="Cliente" value={pedido.cliente} onChange={handlePedidoChange} />
@@ -146,16 +158,28 @@ export default function NovoPedido() {
           </select>
         </div>
 
+        <legend className="form-title">Produtos do Pedido</legend>
+
         <div className="produto-linha novo-produto">
-          <select name="material" value={novoProduto.material} onChange={handleNovoProdutoChange}>
-            {materiaisOpcoes.map(mat => <option key={mat} value={mat}>{mat}</option>)}
-          </select>
-          <input type="number" name="quantidade" placeholder="Qtd" value={novoProduto.quantidade} onChange={handleNovoProdutoChange} min="0" />
-          <input type="number" name="valorUnitario" placeholder="Valor Unit." value={novoProduto.valorUnitario} onChange={handleNovoProdutoChange} min="0" step="0.01" />
-          <input type="number" placeholder="Total" value={calcularTotal(novoProduto.quantidade, novoProduto.valorUnitario).toFixed(2)} readOnly />
-          <button type="button" className="btn-adicionar" onClick={adicionarProduto}>
-            {editIndex !== null ? 'Atualizar' : 'Adicionar'}
-          </button>
+          <div className="col material">
+            <select name="material" value={novoProduto.material} onChange={handleNovoProdutoChange}>
+              {materiaisOpcoes.map(mat => <option key={mat} value={mat}>{mat}</option>)}
+            </select>
+          </div>
+          <div className="col quantidade">
+            <input type="number" name="quantidade" placeholder="Qtd" value={novoProduto.quantidade} onChange={handleNovoProdutoChange} min="0" />
+          </div>
+          <div className="col valor-unitario">
+            <input type="number" name="valorUnitario" placeholder="Valor Unit." value={novoProduto.valorUnitario} onChange={handleNovoProdutoChange} min="0" step="0.01" />
+          </div>
+          <div className="col total">
+            <input type="text" placeholder="Total" value={`R$ ${calcularTotal(novoProduto.quantidade, novoProduto.valorUnitario).toFixed(2)}`} readOnly />
+          </div>
+          <div className="col acoes">
+            <button type="button" className="btn-adicionar" onClick={adicionarProduto}>
+              {editIndex !== null ? 'Atualizar' : 'Adicionar'}
+            </button>
+          </div>
         </div>
 
         {produtos.map((produto, index) => {
@@ -169,24 +193,17 @@ export default function NovoPedido() {
                   </select>
                 ) : produto.material}
               </div>
-              <div className="col quantidade">
-                {isEditing ? (
-                  <input type="number" name="quantidade" value={novoProduto.quantidade} onChange={handleNovoProdutoChange} min="0" />
-                ) : produto.quantidade}
-              </div>
-              <div className="col valor-unitario">
-                {isEditing ? (
-                  <input type="number" name="valorUnitario" value={novoProduto.valorUnitario} onChange={handleNovoProdutoChange} min="0" step="0.01" />
-                ) : `R$${Number(produto.valorUnitario).toFixed(2)}`}
-              </div>
-              <div className="col total">
-                {`R$${calcularTotal(produto.quantidade, produto.valorUnitario).toFixed(2)}`}
-              </div>
+              <div className="col quantidade">{isEditing ? <input type="number" name="quantidade" value={novoProduto.quantidade} onChange={handleNovoProdutoChange} /> : produto.quantidade}</div>
+              <div className="col valor-unitario">{isEditing ? <input type="number" name="valorUnitario" value={novoProduto.valorUnitario} onChange={handleNovoProdutoChange} /> : `R$${Number(produto.valorUnitario).toFixed(2)}`}</div>
+              <div className="col total">{`R$${calcularTotal(produto.quantidade, produto.valorUnitario).toFixed(2)}`}</div>
               <div className="col acoes">
                 {isEditing ? (
                   <>
                     <button type="button" className="btn-adicionar" onClick={adicionarProduto}>Salvar</button>
-                    <button type="button" className="btn-remover" onClick={() => { setEditIndex(null); setNovoProduto({ material: materiaisOpcoes[0], quantidade: '', valorUnitario: '' }); }}>Cancelar</button>
+                    <button type="button" className="btn-remover"
+                      onClick={() => { setEditIndex(null); setNovoProduto({ material: materiaisOpcoes[0], quantidade: '', valorUnitario: '' }); }}>
+                      Cancelar
+                    </button>
                   </>
                 ) : (
                   <>
@@ -202,9 +219,7 @@ export default function NovoPedido() {
         <div className="total-geral">Total R${totalGeral.toFixed(2)}</div>
 
         <div className="botao-container">
-          <button type="button" className="btn-fazer-pedido" onClick={gerarPedido}>
-            Gerar Pedido
-          </button>
+          <button type="button" className="btn-fazer-pedido" onClick={gerarPedido}>Gerar Pedido</button>
         </div>
       </form>
 
@@ -218,12 +233,8 @@ export default function NovoPedido() {
             <button className="btn-toggle" onClick={() => setMostrarPreco(!mostrarPreco)}>
               {mostrarPreco ? 'Esconder Preço' : 'Mostrar Preço'}
             </button>
-            <button className="btn-fazer-pedido" onClick={() => alert('Pedido enviado!')}>
-              Fazer Pedido
-            </button>
-            <button className="btn-fazer-pedido" onClick={() => window.print()}>
-              Imprimir
-            </button>
+            <button className="btn-fazer-pedido" onClick={() => alert('Pedido enviado!')}>Fazer Pedido</button>
+            <button className="btn-fazer-pedido" onClick={() => window.print()}>Imprimir</button>
           </div>
         </>
       )}
