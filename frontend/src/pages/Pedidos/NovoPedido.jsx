@@ -229,12 +229,16 @@ export default function NovoPedido() {
             <LayoutPedido pedido={pedido} produtos={produtos} mostrarPreco={mostrarPreco} />
           </div>
 
-          <div className="botoes-container">
+          <div className="botoes-container centralizada">
             <button className="btn-toggle" onClick={() => setMostrarPreco(!mostrarPreco)}>
               {mostrarPreco ? 'Esconder Preço' : 'Mostrar Preço'}
             </button>
-            <button className="btn-fazer-pedido" onClick={() => alert('Pedido enviado!')}>Fazer Pedido</button>
-            <button className="btn-fazer-pedido" onClick={() => window.print()}>Imprimir</button>
+            <button className="btn-fazer-pedido" onClick={() => alert('Pedido enviado!')}>
+              Fazer Pedido
+            </button>
+            <button className="btn-fazer-pedido" onClick={() => window.print()}>
+              Imprimir
+            </button>
           </div>
         </>
       )}

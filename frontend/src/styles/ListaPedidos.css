@@ -1,276 +1,190 @@
-.lista-pedidos {
-  padding: 20px;
-  font-family: sans-serif;
+/* ============================ */
+/* Variáveis de Cores e Fontes  */
+/* ============================ */
+:root {
+  --cor-principal: #007bff;
+  --cor-perigo: #dc3545;
+  --cor-fundo-claro: #f8f9fa;
+  --cor-borda: #dee2e6;
+  --cor-sombra: rgba(0, 0, 0, 0.1);
+  --fonte-principal: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.filtros-e-total {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  gap: 10px;
+/* ============================ */
+/* Container Principal          */
+/* ============================ */
+.lista-clientes-container {
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 25px 30px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 6px 15px var(--cor-sombra);
+  font-family: var(--fonte-principal);
 }
 
-.filtros input,
-.filtros select {
-  margin-right: 10px;
-  padding: 5px 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
-
-.total-geral {
-  font-size: 20px;
-  font-weight: bold;
-  color: #1a1a1a;
-  background-color: #eaeaea;
-  padding: 8px 16px;
-  border-radius: 8px;
-}
-
-.bloco-cliente {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 15px;
-  margin-bottom: 20px;
-  background: #f9f9f9;
-  border-top-width: 5px;
-  border-top-style: solid;
-}
-
-/* Linhas superiores coloridas por status */
-.bloco-cliente.pendente {
-  border-top-color: #f8bf03; /* amarelo */
-}
-
-.bloco-cliente.pago {
-  border-top-color: #4CAF50; /* verde */
-}
-
-.bloco-cliente.entregue {
-  border-top-color: #2196F3; /* azul */
-}
-
-.cabecalho-pedido {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.cabecalho-pedido h3 {
-  margin: 0;
-}
-
-.data-pedido {
-  font-size: 18px;
-  font-weight: bold;
-  color: #333;
-}
-
-.endereco {
-  margin: 10px 0;
-}
-
-.materiais table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.materiais th,
-.materiais td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-}
-
-.total {
-  margin-top: 10px;
-  font-weight: bold;
-  display: flex;
-  justify-content: flex-end; /* alinhado à direita */
-  align-items: center;
-  gap: 10px;
-  flex-wrap: nowrap;
-}
-
-/* Cor do texto do status conforme o status */
-.total em {
-  font-style: normal;
-  font-weight: bold;
-}
-
-.bloco-cliente.pendente .total em {
-  color: #f8bf03; /* amarelo */
-}
-
-.bloco-cliente.pago .total em {
-  color: #4CAF50; /* verde */
-}
-
-.bloco-cliente.entregue .total em {
-  color: #2196F3; /* azul */
-}
-
-/* Select do status */
-.total select {
-  padding: 6px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  border: 1px solid #ccc;
-}
-
-/* Botão Editar Pedido sem fundo amarelo, estilo mais neutro */
-.total button {
-  color: #000000; /* azul padrão */
-  border: 1px solid #007bff;
-  border-radius: 6px;
-  padding: 6px 14px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.2s ease;
-}
-
-.total button:hover {
-  background-color: #007bff;
-  color: white;
-}
-
-/* Formulário de edição inline */
-
-.edit-pedido-form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 15px;
-  font-size: 14px;
-}
-
-/* Label com span para o título alinhado com input */
-.edit-pedido-form label {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-weight: 600;
-}
-
-.edit-pedido-form label span {
-  flex: 0 0 130px; /* largura fixa do título para alinhamento */
-  min-width: 130px;
-}
-
-.edit-pedido-form input,
-.edit-pedido-form select {
-  flex: 1 1 auto;
-  padding: 6px 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-}
-
-.edit-pedido-form h4 {
-  margin: 20px 0 8px 0;
-  font-weight: 700;
-}
-
-/* Tabela materiais no formulário */
-.materiais-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 5px;
-}
-
-.materiais-table th,
-.materiais-table td {
-  border: 1px solid #ddd;
-  padding: 6px 10px;
-  text-align: left;
-  vertical-align: middle;
-}
-
-.materiais-table select,
-.materiais-table input {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 4px 8px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-}
-
-/* Botões dentro da tabela materiais */
-.materiais-table button {
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 4px 8px;
-  cursor: pointer;
-}
-
-.materiais-table button:hover {
-  background-color: #bb2d3b;
-}
-
-/* Botões do formulário salvar/cancelar e adicionar material */
-.edit-pedido-form > button[type='button'] {
-  background-color: #1cd61c;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
-}
-/* Ajuste específico para os botões Salvar e Cancelar com tamanho fixo igual */
-
-.btn-salvar-cancelar {
-  width: 110px;
-  height: 45px;
-  font-weight: 600;
-  font-size: 16px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  box-sizing: border-box;
+.lista-clientes-container h2 {
   text-align: center;
-  transition: background-color 0.3s ease;
-  user-select: none;
+  color: #343a40;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  font-weight: 700;
+  border-bottom: 2px solid var(--cor-borda);
+  padding-bottom: 10px;
 }
 
-/* Botão Salvar - cor azul */
-.btn-salvar {
-  background-color: #007bff;
-  color: white;
-  margin-right: 15px; /* espaço entre os botões */
+/* ============================ */
+/* Input de busca               */
+.lista-clientes-container input[type="text"] {
+  width: 100%;
+  padding: 10px 15px;
+  margin-bottom: 20px;
+  font-size: 1rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: 5px;
+  box-sizing: border-box;
 }
 
-.btn-salvar:hover {
+.lista-clientes-container input[type="text"]:focus {
+  outline: none;
+  border-color: var(--cor-principal);
+  box-shadow: 0 0 5px rgba(0,123,255,0.3);
+}
+
+/* ============================ */
+/* Tabela                       */
+.lista-clientes-container table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.lista-clientes-container th,
+.lista-clientes-container td {
+  border: 1px solid var(--cor-borda);
+  padding: 8px 12px;
+  text-align: center;
+}
+
+.lista-clientes-container th {
+  background-color: var(--cor-fundo-claro);
+  font-weight: 600;
+  color: #495057;
+}
+
+.lista-clientes-container tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.lista-clientes-container tbody tr:hover {
+  background-color: #f1f3f5;
+}
+
+/* ============================ */
+/* Botões da tabela             */
+.lista-clientes-container button {
+  padding: 6px 12px;
+  margin: 2px;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.lista-clientes-container button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px var(--cor-sombra);
+}
+
+.lista-clientes-container button:nth-child(1) { /* Editar / Salvar */
+  background-color: var(--cor-principal);
+  color: #fff;
+}
+
+.lista-clientes-container button:nth-child(1):hover {
   background-color: #0056b3;
 }
 
-/* Botão Cancelar - cor vermelha */
-.btn-cancelar {
-  background-color: #dc3545;
-  color: white;
+.lista-clientes-container button:nth-child(2) { /* Cancelar / Excluir */
+  background-color: var(--cor-perigo);
+  color: #fff;
 }
 
-.btn-cancelar:hover {
-  background-color: #a71d2a;
+.lista-clientes-container button:nth-child(2):hover {
+  background-color: #b71c1c;
 }
 
-/* Container que envolve os dois botões, para alinhamento flex */
-.edit-pedido-form > div.botao-grupo {
-  display: flex;
-  justify-content: flex-start;
-  gap: 0; /* o margin-right no btn-salvar já dá espaçamento */
-  margin-top: 20px;
-}
-label.tipo-pedido-label {
-  display: flex;
-  justify-content: flex-end; /* empurra o conteúdo para a direita */
-  gap: 10px; /* espaço entre o texto e o select */
-  width: 100%; /* ocupa toda a largura disponível */
+/* ============================ */
+/* Inputs em edição             */
+.lista-clientes-container tbody input {
+  width: 100%;
+  padding: 5px 8px;
+  border: 1px solid var(--cor-borda);
+  border-radius: 4px;
+  font-size: 0.9rem;
+  text-align: center;
+  box-sizing: border-box;
 }
 
+.lista-clientes-container tbody input:focus {
+  outline: none;
+  border-color: var(--cor-principal);
+  box-shadow: 0 0 4px rgba(0,123,255,0.3);
+}
 
+/* ============================ */
+/* Responsividade                */
+@media (max-width: 992px) {
+  .lista-clientes-container table th,
+  .lista-clientes-container table td {
+    font-size: 0.85rem;
+    padding: 6px 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  .lista-clientes-container {
+    padding: 15px;
+  }
+
+  .lista-clientes-container table,
+  .lista-clientes-container thead,
+  .lista-clientes-container tbody,
+  .lista-clientes-container th,
+  .lista-clientes-container td,
+  .lista-clientes-container tr {
+    display: block;
+    width: 100%;
+  }
+
+  .lista-clientes-container thead tr {
+    display: none;
+  }
+
+  .lista-clientes-container tbody tr {
+    margin-bottom: 15px;
+    border: 1px solid var(--cor-borda);
+    border-radius: 8px;
+    padding: 10px;
+  }
+
+  .lista-clientes-container tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 10px;
+    border: none;
+  }
+
+  .lista-clientes-container tbody td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #495057;
+  }
+
+  .lista-clientes-container tbody input {
+    text-align: left;
+  }
+}
