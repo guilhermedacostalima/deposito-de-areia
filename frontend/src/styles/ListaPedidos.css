@@ -1,190 +1,365 @@
-/* ============================ */
-/* Variáveis de Cores e Fontes  */
-/* ============================ */
-:root {
+/* ListaPedidos.css - atualizado: total geral no canto superior direito */
+
+/* =========================
+   Variáveis
+   ========================= */
+:root{
   --cor-principal: #007bff;
+  --cor-principal-dark: #0056b3;
+  --cor-success: #28a745;
+  --cor-warn: #ffc107;
   --cor-perigo: #dc3545;
   --cor-fundo-claro: #f8f9fa;
-  --cor-borda: #dee2e6;
-  --cor-sombra: rgba(0, 0, 0, 0.1);
-  --fonte-principal: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --cor-borda: #e6e9ee;
+  --sombra: 0 6px 18px rgba(0,0,0,0.06);
+  --fonte: "Poppins", "Segoe UI", Tahoma, sans-serif;
 }
 
-/* ============================ */
-/* Container Principal          */
-/* ============================ */
-.lista-clientes-container {
+/* =========================
+   Container principal
+   ========================= */
+.lista-pedidos {
+  width: 95%;
   max-width: 1200px;
-  margin: 30px auto;
-  padding: 25px 30px;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 6px 15px var(--cor-sombra);
-  font-family: var(--fonte-principal);
-}
-
-.lista-clientes-container h2 {
-  text-align: center;
-  color: #343a40;
-  margin-bottom: 20px;
-  font-size: 1.8rem;
-  font-weight: 700;
-  border-bottom: 2px solid var(--cor-borda);
-  padding-bottom: 10px;
-}
-
-/* ============================ */
-/* Input de busca               */
-.lista-clientes-container input[type="text"] {
-  width: 100%;
-  padding: 10px 15px;
-  margin-bottom: 20px;
-  font-size: 1rem;
-  border: 1px solid var(--cor-borda);
-  border-radius: 5px;
+  margin: 32px auto;
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: var(--sombra);
+  font-family: var(--fonte);
+  color: #222;
   box-sizing: border-box;
 }
 
-.lista-clientes-container input[type="text"]:focus {
-  outline: none;
-  border-color: var(--cor-principal);
-  box-shadow: 0 0 5px rgba(0,123,255,0.3);
+/* =========================
+   Painel de filtros (top)
+   ========================= */
+.filtros-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--cor-borda);
 }
 
-/* ============================ */
-/* Tabela                       */
-.lista-clientes-container table {
+/* linha de filtros (esquerda) */
+.filtros-row {
+  display: flex;
+  gap: 12px;
+  align-items: end;
+  flex-wrap: wrap;
+  flex: 1 1 auto;
+}
+
+/* cada filtro */
+.filtro-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 160px;
+  flex: 0 0 auto;
+}
+
+.filtro-item span {
+  font-size: 0.82rem;
+  color: #555;
+  font-weight: 600;
+}
+
+.filtro-item input[type="text"],
+.filtro-item input[type="date"],
+.filtro-item select {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--cor-borda);
+  font-size: 0.95rem;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.filtro-item input:focus,
+.filtro-item select:focus {
+  outline: none;
+  border-color: var(--cor-principal);
+  box-shadow: 0 0 6px rgba(0,123,255,0.12);
+}
+
+/* ações de filtro (botões Aplicar/Limpar) */
+.filtro-acoes {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-left: 4px;
+}
+
+/* =========================
+   Total geral (direita/top)
+   ========================= */
+.filtros-resumo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  min-width: 220px;
+  flex: 0 0 auto;
+}
+
+/* card/area do total */
+.total-top {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  background: linear-gradient(180deg,#ffffff,#fbfdff);
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--cor-borda);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* rótulo pequeno */
+.total-label {
+  font-size: 0.85rem;
+  color: #6b7280;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+/* valor grande e destacado */
+.total-valor {
+  font-size: 34px;
+  font-weight: 800;
+  color: var(--cor-principal);
+  line-height: 1;
+  margin-top: 4px;
+}
+
+/* versão menor em telas estreitas (ajustada via media query) */
+.total-valor.small { font-size: 22px; }
+
+/* resumo extra (quantidade de pedidos) */
+.filtros-resumo small {
+  color: #495057;
+  font-size: 0.9rem;
+}
+
+/* =========================
+   Tabela de materiais / pedidos
+   ========================= */
+.materiais, .tabela-pedidos, .tabela-pedidos th, .tabela-pedidos td {
+  box-sizing: border-box;
+}
+
+.materiais {
+  margin-top: 10px;
+  overflow-x: auto;
+}
+
+.tabela-pedidos {
   width: 100%;
   border-collapse: collapse;
+  margin-top: 6px;
   font-size: 0.95rem;
 }
 
-.lista-clientes-container th,
-.lista-clientes-container td {
-  border: 1px solid var(--cor-borda);
-  padding: 8px 12px;
-  text-align: center;
+.tabela-pedidos th,
+.tabela-pedidos td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #eef1f6;
+  text-align: left;
+  vertical-align: middle;
 }
 
-.lista-clientes-container th {
-  background-color: var(--cor-fundo-claro);
+.tabela-pedidos th {
+  background: var(--cor-fundo-claro);
+  font-weight: 700;
+  color: #333;
+}
+
+/* hover linha */
+.tabela-pedidos tbody tr:hover {
+  background: #fafbff;
+}
+
+/* =========================
+   Status com dot colorido
+   ========================= */
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-weight: 600;
-  color: #495057;
+  text-transform: capitalize;
 }
 
-.lista-clientes-container tbody tr:nth-child(even) {
-  background-color: #f9f9f9;
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
 }
 
-.lista-clientes-container tbody tr:hover {
-  background-color: #f1f3f5;
-}
+/* cores */
+.status.pago .status-dot { background: var(--cor-success); }
+.status.entregue .status-dot { background: var(--cor-principal); }
+.status.pendente .status-dot { background: var(--cor-warn); }
 
-/* ============================ */
-/* Botões da tabela             */
-.lista-clientes-container button {
-  padding: 6px 12px;
-  margin: 2px;
-  border: none;
-  border-radius: 5px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.lista-clientes-container button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 2px 6px var(--cor-sombra);
-}
-
-.lista-clientes-container button:nth-child(1) { /* Editar / Salvar */
-  background-color: var(--cor-principal);
-  color: #fff;
-}
-
-.lista-clientes-container button:nth-child(1):hover {
-  background-color: #0056b3;
-}
-
-.lista-clientes-container button:nth-child(2) { /* Cancelar / Excluir */
-  background-color: var(--cor-perigo);
-  color: #fff;
-}
-
-.lista-clientes-container button:nth-child(2):hover {
-  background-color: #b71c1c;
-}
-
-/* ============================ */
-/* Inputs em edição             */
-.lista-clientes-container tbody input {
-  width: 100%;
-  padding: 5px 8px;
+/* =========================
+   Bloco de cada pedido (quando não em tabela)
+   ========================= */
+.bloco-cliente {
   border: 1px solid var(--cor-borda);
-  border-radius: 4px;
-  font-size: 0.9rem;
-  text-align: center;
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 14px;
+  background: linear-gradient(180deg,#fff,#fbfbfb);
+}
+
+/* destaque por status (borda esquerda) */
+.bloco-cliente.pendente { border-left: 6px solid var(--cor-warn); }
+.bloco-cliente.pago { border-left: 6px solid var(--cor-success); }
+.bloco-cliente.entregue { border-left: 6px solid var(--cor-principal); }
+
+/* cabeçalho do pedido */
+.cabecalho-pedido {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.cabecalho-pedido h3 {
+  margin: 0;
+  font-size: 1.02rem;
+  font-weight: 700;
+}
+
+.data-pedido {
+  color: #6b7280;
+  font-size: 0.92rem;
+}
+
+/* total e ações dentro do bloco */
+.total {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+/* select simples dentro do bloco */
+.total select {
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--cor-borda);
+  background: #fff;
+}
+
+/* =========================
+   Formulário de edição
+   ========================= */
+form.edicao-pedido {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px dashed var(--cor-borda);
+  background: #fff;
+}
+
+.edicao-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.edicao-grid .full { grid-column: 1 / -1; }
+
+.edicao-pedido input[type="text"],
+.edicao-pedido input[type="number"],
+.edicao-pedido select,
+.edicao-pedido textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--cor-borda);
   box-sizing: border-box;
+  font-size: 0.95rem;
 }
 
-.lista-clientes-container tbody input:focus {
-  outline: none;
-  border-color: var(--cor-principal);
-  box-shadow: 0 0 4px rgba(0,123,255,0.3);
+/* materiais em edição */
+.materiais-edicao .linha-material {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr auto;
+  gap: 8px;
+  margin-bottom: 8px;
 }
 
-/* ============================ */
-/* Responsividade                */
+/* =========================
+   Botões
+   ========================= */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.12s ease;
+  min-height: 36px;
+}
+
+.button.editar { background: var(--cor-principal); color: #fff; }
+.button.editar:hover { background: var(--cor-principal-dark); }
+
+.button.cancelar { background: var(--cor-perigo); color: #fff; }
+.button.cancelar:hover { background: #b02a37; }
+
+.button.salvar { background: #17a2b8; color: #fff; }
+.button.limpar { background: #6c757d; color: #fff; }
+
+/* =========================
+   Responsividade
+   ========================= */
 @media (max-width: 992px) {
-  .lista-clientes-container table th,
-  .lista-clientes-container table td {
-    font-size: 0.85rem;
-    padding: 6px 8px;
-  }
+  .filtros-row { gap: 10px; }
+  .filtro-item { min-width: 140px; }
+  .total-valor { font-size: 28px; }
 }
 
-@media (max-width: 768px) {
-  .lista-clientes-container {
-    padding: 15px;
+@media (max-width: 720px) {
+  .filtros-top {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
   }
 
-  .lista-clientes-container table,
-  .lista-clientes-container thead,
-  .lista-clientes-container tbody,
-  .lista-clientes-container th,
-  .lista-clientes-container td,
-  .lista-clientes-container tr {
-    display: block;
+  .filtros-row {
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .filtro-item { width: 100%; min-width: auto; }
+
+  .filtros-resumo {
+    align-items: flex-start;
     width: 100%;
   }
 
-  .lista-clientes-container thead tr {
-    display: none;
-  }
-
-  .lista-clientes-container tbody tr {
-    margin-bottom: 15px;
-    border: 1px solid var(--cor-borda);
-    border-radius: 8px;
-    padding: 10px;
-  }
-
-  .lista-clientes-container tbody td {
-    display: flex;
+  /* total menor e à direita dentro do fluxo */
+  .total-top {
+    flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 6px 10px;
-    border: none;
   }
 
-  .lista-clientes-container tbody td::before {
-    content: attr(data-label);
-    font-weight: 600;
-    color: #495057;
-  }
-
-  .lista-clientes-container tbody input {
-    text-align: left;
-  }
+  .total-label { font-size: 0.85rem; }
+  .total-valor { font-size: 22px; }
 }
