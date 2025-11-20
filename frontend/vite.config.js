@@ -1,12 +1,13 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import path from 'path'  // <- importe o path
+import path from 'path'
 
 export default defineConfig({
+  base: '/deposito-de-areia/',  // <<< ESSA LINHA
   plugins: [react()],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),  // define o alias @ para src
+      '@': path.resolve(__dirname, './src'),
     },
   },
 })
